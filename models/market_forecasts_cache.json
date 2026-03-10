@@ -1,0 +1,458 @@
+{
+  "rice": [
+    {
+      "month": "Jan 2025",
+      "price": 2356.87,
+      "price_low": 2299.88,
+      "price_high": 2411.16
+    },
+    {
+      "month": "Feb 2025",
+      "price": 2248.93,
+      "price_low": 2187.37,
+      "price_high": 2304.43
+    },
+    {
+      "month": "Mar 2025",
+      "price": 2359.37,
+      "price_low": 2301.25,
+      "price_high": 2414.09
+    },
+    {
+      "month": "Apr 2025",
+      "price": 2583.42,
+      "price_low": 2529.84,
+      "price_high": 2641.33
+    },
+    {
+      "month": "May 2025",
+      "price": 2627.05,
+      "price_low": 2572.0,
+      "price_high": 2682.49
+    },
+    {
+      "month": "Jun 2025",
+      "price": 2709.2,
+      "price_low": 2656.47,
+      "price_high": 2760.1
+    }
+  ],
+  "maize": [
+    {
+      "month": "Jan 2025",
+      "price": 2378.91,
+      "price_low": 2329.92,
+      "price_high": 2429.11
+    },
+    {
+      "month": "Feb 2025",
+      "price": 2340.3,
+      "price_low": 2287.33,
+      "price_high": 2391.67
+    },
+    {
+      "month": "Mar 2025",
+      "price": 2461.98,
+      "price_low": 2410.83,
+      "price_high": 2512.09
+    },
+    {
+      "month": "Apr 2025",
+      "price": 2384.37,
+      "price_low": 2331.76,
+      "price_high": 2433.36
+    },
+    {
+      "month": "May 2025",
+      "price": 2261.0,
+      "price_low": 2208.88,
+      "price_high": 2310.36
+    },
+    {
+      "month": "Jun 2025",
+      "price": 2204.95,
+      "price_low": 2153.67,
+      "price_high": 2257.17
+    }
+  ],
+  "wheat": [
+    {
+      "month": "Jan 2025",
+      "price": 2590.8,
+      "price_low": 2533.28,
+      "price_high": 2656.18
+    },
+    {
+      "month": "Feb 2025",
+      "price": 2492.1,
+      "price_low": 2433.53,
+      "price_high": 2554.82
+    },
+    {
+      "month": "Mar 2025",
+      "price": 2412.46,
+      "price_low": 2349.78,
+      "price_high": 2469.95
+    },
+    {
+      "month": "Apr 2025",
+      "price": 2571.65,
+      "price_low": 2507.76,
+      "price_high": 2628.72
+    },
+    {
+      "month": "May 2025",
+      "price": 2645.72,
+      "price_low": 2581.96,
+      "price_high": 2711.18
+    },
+    {
+      "month": "Jun 2025",
+      "price": 2841.79,
+      "price_low": 2783.65,
+      "price_high": 2907.69
+    }
+  ],
+  "chickpea": [
+    {
+      "month": "Jan 2025",
+      "price": 6495.03,
+      "price_low": 6363.19,
+      "price_high": 6636.19
+    },
+    {
+      "month": "Feb 2025",
+      "price": 6613.3,
+      "price_low": 6471.29,
+      "price_high": 6740.4
+    },
+    {
+      "month": "Mar 2025",
+      "price": 6397.13,
+      "price_low": 6262.95,
+      "price_high": 6527.88
+    },
+    {
+      "month": "Apr 2025",
+      "price": 6468.37,
+      "price_low": 6334.62,
+      "price_high": 6599.64
+    },
+    {
+      "month": "May 2025",
+      "price": 6148.86,
+      "price_low": 6012.83,
+      "price_high": 6280.96
+    },
+    {
+      "month": "Jun 2025",
+      "price": 5975.67,
+      "price_low": 5842.93,
+      "price_high": 6102.95
+    }
+  ],
+  "mungbean": [
+    {
+      "month": "Jan 2025",
+      "price": 7887.84,
+      "price_low": 7652.81,
+      "price_high": 8116.61
+    },
+    {
+      "month": "Feb 2025",
+      "price": 7805.65,
+      "price_low": 7550.76,
+      "price_high": 8043.1
+    },
+    {
+      "month": "Mar 2025",
+      "price": 8403.39,
+      "price_low": 8158.92,
+      "price_high": 8638.72
+    },
+    {
+      "month": "Apr 2025",
+      "price": 8773.51,
+      "price_low": 8536.93,
+      "price_high": 9021.59
+    },
+    {
+      "month": "May 2025",
+      "price": 8967.66,
+      "price_low": 8724.26,
+      "price_high": 9209.0
+    },
+    {
+      "month": "Jun 2025",
+      "price": 9161.34,
+      "price_low": 8935.33,
+      "price_high": 9404.16
+    }
+  ],
+  "cotton": [
+    {
+      "month": "Jan 2025",
+      "price": 8091.49,
+      "price_low": 7883.86,
+      "price_high": 8296.64
+    },
+    {
+      "month": "Feb 2025",
+      "price": 8260.33,
+      "price_low": 8053.34,
+      "price_high": 8479.34
+    },
+    {
+      "month": "Mar 2025",
+      "price": 8420.2,
+      "price_low": 8210.11,
+      "price_high": 8631.07
+    },
+    {
+      "month": "Apr 2025",
+      "price": 8284.61,
+      "price_low": 8062.51,
+      "price_high": 8501.92
+    },
+    {
+      "month": "May 2025",
+      "price": 8092.17,
+      "price_low": 7867.68,
+      "price_high": 8324.94
+    },
+    {
+      "month": "Jun 2025",
+      "price": 7820.27,
+      "price_low": 7612.49,
+      "price_high": 8045.96
+    }
+  ],
+  "tomato": [
+    {
+      "month": "Jan 2025",
+      "price": 2100.65,
+      "price_low": 2073.61,
+      "price_high": 2129.46
+    },
+    {
+      "month": "Feb 2025",
+      "price": 2320.61,
+      "price_low": 2291.37,
+      "price_high": 2350.49
+    },
+    {
+      "month": "Mar 2025",
+      "price": 2475.03,
+      "price_low": 2447.2,
+      "price_high": 2505.98
+    },
+    {
+      "month": "Apr 2025",
+      "price": 2268.57,
+      "price_low": 2242.22,
+      "price_high": 2296.98
+    },
+    {
+      "month": "May 2025",
+      "price": 1909.59,
+      "price_low": 1879.69,
+      "price_high": 1939.84
+    },
+    {
+      "month": "Jun 2025",
+      "price": 1574.59,
+      "price_low": 1546.45,
+      "price_high": 1607.71
+    }
+  ],
+  "onion": [
+    {
+      "month": "Jan 2025",
+      "price": 2069.2,
+      "price_low": 2030.08,
+      "price_high": 2107.92
+    },
+    {
+      "month": "Feb 2025",
+      "price": 1991.87,
+      "price_low": 1953.49,
+      "price_high": 2029.05
+    },
+    {
+      "month": "Mar 2025",
+      "price": 2078.18,
+      "price_low": 2040.45,
+      "price_high": 2117.94
+    },
+    {
+      "month": "Apr 2025",
+      "price": 2155.29,
+      "price_low": 2115.4,
+      "price_high": 2195.03
+    },
+    {
+      "month": "May 2025",
+      "price": 2529.86,
+      "price_low": 2489.74,
+      "price_high": 2568.19
+    },
+    {
+      "month": "Jun 2025",
+      "price": 2951.22,
+      "price_low": 2911.78,
+      "price_high": 2990.41
+    }
+  ],
+  "potato": [
+    {
+      "month": "Jan 2025",
+      "price": 1421.19,
+      "price_low": 1383.94,
+      "price_high": 1458.32
+    },
+    {
+      "month": "Feb 2025",
+      "price": 1563.5,
+      "price_low": 1523.67,
+      "price_high": 1601.45
+    },
+    {
+      "month": "Mar 2025",
+      "price": 1566.55,
+      "price_low": 1530.88,
+      "price_high": 1606.79
+    },
+    {
+      "month": "Apr 2025",
+      "price": 1534.35,
+      "price_low": 1495.79,
+      "price_high": 1572.91
+    },
+    {
+      "month": "May 2025",
+      "price": 1351.75,
+      "price_low": 1312.53,
+      "price_high": 1389.11
+    },
+    {
+      "month": "Jun 2025",
+      "price": 1231.32,
+      "price_low": 1192.7,
+      "price_high": 1267.91
+    }
+  ],
+  "soybean": [
+    {
+      "month": "Jan 2025",
+      "price": 4479.08,
+      "price_low": 4359.22,
+      "price_high": 4600.97
+    },
+    {
+      "month": "Feb 2025",
+      "price": 4812.75,
+      "price_low": 4690.53,
+      "price_high": 4938.87
+    },
+    {
+      "month": "Mar 2025",
+      "price": 4912.04,
+      "price_low": 4792.49,
+      "price_high": 5029.12
+    },
+    {
+      "month": "Apr 2025",
+      "price": 4834.94,
+      "price_low": 4706.03,
+      "price_high": 4959.74
+    },
+    {
+      "month": "May 2025",
+      "price": 5124.36,
+      "price_low": 5004.04,
+      "price_high": 5249.17
+    },
+    {
+      "month": "Jun 2025",
+      "price": 5008.47,
+      "price_low": 4873.51,
+      "price_high": 5126.06
+    }
+  ],
+  "sugarcane": [
+    {
+      "month": "Jan 2025",
+      "price": 3623.83,
+      "price_low": 3535.95,
+      "price_high": 3712.17
+    },
+    {
+      "month": "Feb 2025",
+      "price": 3566.77,
+      "price_low": 3483.29,
+      "price_high": 3646.94
+    },
+    {
+      "month": "Mar 2025",
+      "price": 3672.19,
+      "price_low": 3593.73,
+      "price_high": 3759.8
+    },
+    {
+      "month": "Apr 2025",
+      "price": 3686.24,
+      "price_low": 3595.28,
+      "price_high": 3773.03
+    },
+    {
+      "month": "May 2025",
+      "price": 3482.64,
+      "price_low": 3393.83,
+      "price_high": 3567.83
+    },
+    {
+      "month": "Jun 2025",
+      "price": 3534.17,
+      "price_low": 3452.04,
+      "price_high": 3619.38
+    }
+  ],
+  "groundnut": [
+    {
+      "month": "Jan 2025",
+      "price": 6930.68,
+      "price_low": 6785.06,
+      "price_high": 7082.86
+    },
+    {
+      "month": "Feb 2025",
+      "price": 6856.23,
+      "price_low": 6701.0,
+      "price_high": 7008.93
+    },
+    {
+      "month": "Mar 2025",
+      "price": 6641.32,
+      "price_low": 6486.85,
+      "price_high": 6796.02
+    },
+    {
+      "month": "Apr 2025",
+      "price": 6424.11,
+      "price_low": 6275.51,
+      "price_high": 6559.96
+    },
+    {
+      "month": "May 2025",
+      "price": 6018.79,
+      "price_low": 5873.24,
+      "price_high": 6180.66
+    },
+    {
+      "month": "Jun 2025",
+      "price": 5942.94,
+      "price_low": 5788.42,
+      "price_high": 6091.61
+    }
+  ]
+}

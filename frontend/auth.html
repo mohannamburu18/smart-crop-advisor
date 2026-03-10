@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kisan AI — Get Started</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0a1a0f; --ink2:   #152b1c; --forest: #1d4228;
+  --moss:   #2d6a3f; --sage:   #4a9960; --mint:   #7ec89a;
+  --bg:     #f4f0e8; --paper:  #faf8f3; --border: #d8d0c0;
+  --text:   #1a2a1e; --sub:    #4a6250; --muted:  #7a9280;
+  --clay:   #c4623a; --red:    #dc2626;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'Space Grotesk',sans-serif;background:var(--ink);overflow:hidden;}
+
+.wrapper{display:grid;grid-template-columns:460px 1fr;height:100vh;}
+
+/* LEFT panel */
+.left{background:var(--bg);display:flex;flex-direction:column;overflow:hidden;box-shadow:8px 0 60px rgba(0,0,0,.4);position:relative;z-index:2;}
+
+/* RIGHT panel */
+.right{background:var(--ink);position:relative;overflow:hidden;display:flex;align-items:center;padding:0 72px;}
+.right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 28% 28%,rgba(45,106,63,.3),transparent 55%),radial-gradient(ellipse at 72% 78%,rgba(78,153,96,.1),transparent 50%);pointer-events:none;}
+
+.brand{position:relative;z-index:1;max-width:480px;}
+.brand-logo{width:78px;height:78px;border-radius:22px;background:linear-gradient(135deg,var(--sage),var(--moss));display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:32px;box-shadow:0 0 60px rgba(74,153,96,.4),0 20px 40px rgba(0,0,0,.3);animation:glow 3s ease-in-out infinite;}
+@keyframes glow{0%,100%{box-shadow:0 0 60px rgba(74,153,96,.4),0 20px 40px rgba(0,0,0,.3);}50%{box-shadow:0 0 90px rgba(74,153,96,.65),0 20px 40px rgba(0,0,0,.3);}}
+.brand-title{font-family:'Playfair Display',serif;font-size:46px;font-weight:900;color:#fff;line-height:1.07;margin-bottom:14px;}
+.brand-title em{color:var(--mint);font-style:normal;}
+.brand-sub{font-size:15px;color:rgba(255,255,255,.38);line-height:1.75;margin-bottom:42px;max-width:370px;}
+.brand-stats{display:flex;gap:36px;margin-bottom:44px;}
+.bs-n{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#fff;}
+.bs-l{font-size:10px;color:rgba(255,255,255,.27);text-transform:uppercase;letter-spacing:1.2px;margin-top:3px;}
+.lang-strip{display:flex;gap:7px;flex-wrap:wrap;}
+.lang-badge{padding:5px 12px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:11px;color:rgba(255,255,255,.28);font-weight:500;}
+
+/* Floating cards */
+.fcards{position:absolute;right:52px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;}
+.fc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:13px 18px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(6px);min-width:192px;}
+.fc:nth-child(1){animation:fl 4s ease-in-out infinite;}
+.fc:nth-child(2){animation:fl 4s ease-in-out infinite .9s;}
+.fc:nth-child(3){animation:fl 4s ease-in-out infinite 1.8s;}
+.fc:nth-child(4){animation:fl 4s ease-in-out infinite 2.7s;}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.fc-em{font-size:24px;flex-shrink:0;}
+.fc-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.6);}
+.fc-val{font-size:12px;color:var(--mint);font-weight:700;margin-top:2px;}
+
+/* SCREENS */
+.screen{display:none;flex-direction:column;height:100%;}
+.screen.active{display:flex;animation:fadeUp .28s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* Splash */
+#s-splash{align-items:center;justify-content:center;background:var(--bg);}
+.splash-body{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px;text-align:center;}
+.splash-logo{width:100px;height:100px;border-radius:28px;background:linear-gradient(135deg,var(--sage),var(--moss));display:flex;align-items:center;justify-content:center;font-size:52px;margin-bottom:26px;box-shadow:0 0 60px rgba(74,153,96,.2),0 16px 36px rgba(0,0,0,.08);animation:glow2 3s ease-in-out infinite;}
+@keyframes glow2{0%,100%{box-shadow:0 0 60px rgba(74,153,96,.2),0 16px 36px rgba(0,0,0,.08);}50%{box-shadow:0 0 90px rgba(74,153,96,.35),0 16px 36px rgba(0,0,0,.08);}}
+.splash-name{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--text);margin-bottom:8px;}
+.splash-tag{font-size:13px;color:var(--muted);margin-bottom:44px;}
+.splash-tag span{color:var(--moss);font-weight:600;}
+.loading-bar{width:120px;height:3px;background:var(--border);border-radius:2px;margin:0 auto 40px;overflow:hidden;}
+.loading-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sage),var(--mint));border-radius:2px;transition:width 2s ease;}
+.splash-btns{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.lang-pills{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.lp{font-size:10px;background:rgba(74,153,96,.1);border:1px solid rgba(74,153,96,.2);color:var(--moss);padding:4px 11px;border-radius:100px;font-weight:600;}
+
+/* Step bar */
+.step-bar{display:flex;gap:5px;padding:20px 40px 0;flex-shrink:0;}
+.step{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .35s;}
+.step.done{background:var(--sage);}
+.step.active{background:linear-gradient(90deg,var(--sage),var(--mint));}
+
+/* Header */
+.sh{padding:22px 40px 14px;flex-shrink:0;}
+.sh-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:12px;background:none;border:none;font-family:'Space Grotesk',sans-serif;transition:color .2s;}
+.sh-back:hover{color:var(--moss);}
+.sh h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--text);margin-bottom:4px;}
+.sh p{font-size:13px;color:var(--muted);line-height:1.5;}
+
+/* Body + footer */
+.sb{padding:4px 40px 0;flex:1;overflow-y:auto;}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.sf{padding:14px 40px 28px;flex-shrink:0;}
+
+/* Field */
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-bottom:5px;}
+.field input,.field select{width:100%;padding:12px 14px;background:var(--paper);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;outline:none;transition:border-color .2s,background .2s;appearance:none;}
+.field input::placeholder{color:var(--muted);font-weight:400;}
+.field input:focus,.field select:focus{border-color:var(--sage);background:rgba(74,153,96,.04);}
+.field select{cursor:pointer;}
+.field select option{background:var(--paper);color:var(--text);}
+.field-pw{position:relative;}
+.field-pw input{padding-right:44px;}
+.field-pw-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:15px;color:var(--muted);user-select:none;}
+.field-prefix{position:relative;}
+.field-prefix input{padding-left:56px;}
+.field-prefix-lbl{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--muted);border-right:1.5px solid var(--border);padding-right:9px;pointer-events:none;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* Buttons */
+.btn{width:100%;padding:13px;border:none;border-radius:13px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:linear-gradient(135deg,var(--sage),var(--moss));color:#fff;box-shadow:0 4px 20px rgba(74,153,96,.3);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(74,153,96,.44);}
+.btn-primary:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;color:var(--sage);border:1.5px solid rgba(74,153,96,.35);}
+.btn-outline:hover{background:rgba(74,153,96,.06);}
+
+/* Checkbox */
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:rgba(74,153,96,.05);border:1px solid rgba(74,153,96,.15);border-radius:11px;margin-bottom:12px;}
+.check-row input[type=checkbox]{width:15px;height:15px;margin-top:2px;accent-color:var(--sage);cursor:pointer;flex-shrink:0;}
+.check-row label{font-size:12px;color:var(--sub);cursor:pointer;line-height:1.55;}
+.check-row label a{color:var(--moss);font-weight:600;text-decoration:none;}
+
+.auth-link{text-align:center;font-size:13px;color:var(--muted);margin-top:12px;}
+.auth-link span{color:var(--moss);font-weight:700;cursor:pointer;}
+
+.err{font-size:11px;color:var(--red);font-weight:600;margin-top:4px;display:none;padding:8px 12px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.15);border-radius:8px;}
+
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block;}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.forgot{font-size:12px;color:var(--sage);font-weight:600;cursor:pointer;text-align:right;margin-bottom:12px;}
+.forgot:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ████ LEFT PANEL ████ -->
+  <div class="left">
+
+    <!-- SCREEN 1: SPLASH -->
+    <div class="screen active" id="s-splash">
+      <div class="splash-body">
+        <div class="splash-logo">🌿</div>
+        <div class="splash-name">Smart Crop Advisor</div>
+        <div class="splash-tag">Powered by <span>Kisan AI</span> · ₹ Profit Aware</div>
+        <div class="loading-bar"><div class="loading-fill" id="lbar"></div></div>
+        <div class="splash-btns">
+          <button class="btn btn-primary" onclick="goTo('s-register')">🚀 Get Started — Create Account</button>
+          <button class="btn btn-outline" onclick="goTo('s-login')">🔑 Already have an account? Login</button>
+        </div>
+        <div class="lang-pills">
+          <span class="lp">हिंदी</span><span class="lp">తెలుగు</span><span class="lp">தமிழ்</span>
+          <span class="lp">ಕನ್ನಡ</span><span class="lp">मराठी</span><span class="lp">ਪੰਜਾਬੀ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: CREATE ACCOUNT -->
+    <div class="screen" id="s-register">
+      <div class="step-bar">
+        <div class="step active" id="st1"></div>
+        <div class="step" id="st2"></div>
+      </div>
+      <div class="sh">
+        <button class="sh-back" onclick="goTo('s-splash')">← Back</button>
+        <h1>Create Account</h1>
+        <p>Join the AI-powered farming network</p>
+      </div>
+      <div class="sb">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="r-name" placeholder="e.g. Rajesh Kumar" autocomplete="name">
+        </div>
+        <div class="field">
+          <label>Mobile Number</label>
+          <div class="field-prefix">
+            <span class="field-prefix-lbl">+91</span>
+            <input type="tel" id="r-phone" placeholder="98765 43210" maxlength="10">
+          </div>
+        </div>
+        <div class="field">
+          <label>Location (Village / District)</label>
+          <input type="text" id="r-location" placeholder="e.g. Nashik, Maharashtra">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>State</label>
+            <select id="r-state">
+              <option value="">Select State</option>
+              <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
+              <option>Gujarat</option><option>Haryana</option><option>Karnataka</option>
+              <option>Kerala</option><option>Madhya Pradesh</option>
+              <option selected>Maharashtra</option><option>Odisha</option>
+              <option>Punjab</option><option>Rajasthan</option>
+              <option>Tamil Nadu</option><option>Telangana</option>
+              <option>Uttar Pradesh</option><option>West Bengal</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Land (Acres)</label>
+            <input type="number" id="r-acres" placeholder="e.g. 2.5" step="0.5" min="0.5">
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="field-pw">
+            <input type="password" id="r-pass" placeholder="Min 8 characters">
+            <span class="field-pw-eye" onclick="togglePw('r-pass',this)">👁</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <div class="field-pw">
+            <input type="password" id="r-pass2" placeholder="Repeat password">
+            <span class="field-pw-eye" onclick="togglePw('r-pass2',this)">👁</span>
+          </div>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="r-terms">
+          <label for="r-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Kisan AI uses your data only for personalized crop recommendations.</label>
+        </div>
+        <div class="err" id="r-err"></div>
+      </div>
+      <div class="sf">
+        <button class="btn btn-primary" id="r-btn" onclick="doRegister()">Create Account</button>
+        <div class="auth-link">Already have an account? <span onclick="goTo('s-login')">Login</span></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: LOGIN -->
+    <div class="screen" id="s-login">
+      <div class="sh" style="padding-top:40px">
+        <button class="sh-back" onclick="goTo('s-splash')">← Back</button>
+        <h1>Welcome Back 👋</h1>
+        <p>Sign in to your Kisan AI account</p>
+      </div>
+      <div class="sb">
+        <div class="field">
+          <label>Mobile Number</label>
+          <div class="field-prefix">
+            <span class="field-prefix-lbl">+91</span>
+            <input type="tel" id="l-phone" placeholder="98765 43210" maxlength="10">
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="field-pw">
+            <input type="password" id="l-pass" placeholder="Enter your password">
+            <span class="field-pw-eye" onclick="togglePw('l-pass',this)">👁</span>
+          </div>
+        </div>
+        <div class="forgot" onclick="alert('Demo: 9876543210 / demo1234')">Forgot password?</div>
+        <div class="err" id="l-err"></div>
+        <!-- Demo hint -->
+        <div style="padding:10px 13px;background:rgba(74,153,96,.06);border:1px solid rgba(74,153,96,.15);border-radius:10px;margin-bottom:4px">
+          <div style="font-size:10px;font-weight:700;color:var(--moss);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Demo Account</div>
+          <div style="font-size:12px;color:var(--sub)">Mobile: <strong style="color:var(--text)">9876543210</strong> &nbsp;·&nbsp; Password: <strong style="color:var(--text)">demo1234</strong></div>
+          <button onclick="fillDemo()" style="margin-top:8px;padding:5px 14px;background:var(--sage);border:none;border-radius:8px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Space Grotesk',sans-serif">Use Demo →</button>
+        </div>
+      </div>
+      <div class="sf">
+        <button class="btn btn-primary" id="l-btn" onclick="doLogin()">🔑 Sign In</button>
+        <div class="auth-link">New to Kisan AI? <span onclick="goTo('s-register')">Create Account</span></div>
+      </div>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- ████ RIGHT PANEL ████ -->
+  <div class="right">
+    <div class="brand">
+      <div class="brand-logo">🌿</div>
+      <div class="brand-title">Smart <em>Profit-Aware</em><br>Crop Advisory</div>
+      <div class="brand-sub">AI-powered recommendations for Indian farmers.<br>Know your profit before you sow — in your language.</div>
+      <div class="brand-stats">
+        <div><div class="bs-n">1.2L+</div><div class="bs-l">Farmers</div></div>
+        <div><div class="bs-n">99.3%</div><div class="bs-l">Accuracy</div></div>
+        <div><div class="bs-n">₹2.4L</div><div class="bs-l">Avg Profit</div></div>
+        <div><div class="bs-n">9</div><div class="bs-l">Languages</div></div>
+      </div>
+      <div class="lang-strip">
+        <span class="lang-badge">हिंदी</span><span class="lang-badge">తెలుగు</span>
+        <span class="lang-badge">தமிழ்</span><span class="lang-badge">ಕನ್ನಡ</span>
+        <span class="lang-badge">मराठी</span><span class="lang-badge">বাংলা</span>
+        <span class="lang-badge">ગુજરાતી</span><span class="lang-badge">ਪੰਜਾਬੀ</span>
+      </div>
+    </div>
+    <div class="fcards">
+      <div class="fc"><span class="fc-em">🌾</span><div><div class="fc-name">Wheat (Sharbati)</div><div class="fc-val">+₹45,000 profit</div></div></div>
+      <div class="fc"><span class="fc-em">🌸</span><div><div class="fc-name">Cotton (BT)</div><div class="fc-val">+₹82,400 profit</div></div></div>
+      <div class="fc"><span class="fc-em">🌽</span><div><div class="fc-name">Maize</div><div class="fc-val">+₹28,600 profit</div></div></div>
+      <div class="fc"><span class="fc-em">🫘</span><div><div class="fc-name">Soybean</div><div class="fc-val">+₹36,200 profit</div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function getUsers(){return JSON.parse(localStorage.getItem('ka_users')||'[]');}
+function saveUsers(a){localStorage.setItem('ka_users',JSON.stringify(a));}
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function togglePw(id,btn){
+  const i=document.getElementById(id);
+  i.type=i.type==='password'?'text':'password';
+  btn.textContent=i.type==='password'?'👁':'🙈';
+}
+
+function showErr(id,msg){
+  const e=document.getElementById(id);
+  e.textContent=msg; e.style.display='block';
+  setTimeout(()=>e.style.display='none',4000);
+}
+
+function doRegister(){
+  const name    =document.getElementById('r-name').value.trim();
+  const phone   =document.getElementById('r-phone').value.trim().replace(/\s/g,'');
+  const location=document.getElementById('r-location').value.trim();
+  const state   =document.getElementById('r-state').value;
+  const acres   =document.getElementById('r-acres').value||'2.5';
+  const pass    =document.getElementById('r-pass').value;
+  const pass2   =document.getElementById('r-pass2').value;
+  const terms   =document.getElementById('r-terms').checked;
+
+  if(!name)              return showErr('r-err','⚠ Please enter your full name');
+  if(phone.length<10)    return showErr('r-err','⚠ Enter a valid 10-digit mobile number');
+  if(!state)             return showErr('r-err','⚠ Please select your state');
+  if(!pass||pass.length<8) return showErr('r-err','⚠ Password must be at least 8 characters');
+  if(pass!==pass2)       return showErr('r-err','⚠ Passwords do not match');
+  if(!terms)             return showErr('r-err','⚠ Please accept the terms to continue');
+
+  const users=getUsers();
+  if(users.find(u=>u.phone===phone)) return showErr('r-err','⚠ Mobile already registered. Please login.');
+
+  const btn=document.getElementById('r-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Creating account...';
+
+  setTimeout(()=>{
+    const user={name,phone,location,state,acres,pass};
+    users.push(user); saveUsers(users);
+    localStorage.setItem('ka_user',JSON.stringify({name,phone,location,state,acres}));
+    btn.innerHTML='✅ Account Created!';
+    btn.style.background='linear-gradient(135deg,#22c55e,#15803d)';
+    setTimeout(()=>window.location.href='index.html',900);
+  },1400);
+}
+
+function doLogin(){
+  const phone=document.getElementById('l-phone').value.trim().replace(/\s/g,'');
+  const pass =document.getElementById('l-pass').value;
+  if(phone.length<10) return showErr('l-err','⚠ Enter a valid 10-digit mobile number');
+  if(!pass)           return showErr('l-err','⚠ Please enter your password');
+
+  const btn=document.getElementById('l-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Signing in...';
+
+  setTimeout(()=>{
+    // Demo account
+    if(phone==='9876543210'&&pass==='demo1234'){
+      localStorage.setItem('ka_user',JSON.stringify({
+        name:'Rajesh Kumar',phone:'9876543210',
+        location:'Nashik, Maharashtra',state:'Maharashtra',
+        acres:'2.5',soil:'Black (Regur)',irrigation:'Canal / River'
+      }));
+      btn.innerHTML='✅ Welcome back!';
+      btn.style.background='linear-gradient(135deg,#22c55e,#15803d)';
+      setTimeout(()=>window.location.href='index.html',800);
+      return;
+    }
+    const user=getUsers().find(u=>u.phone===phone&&u.pass===pass);
+    if(!user){
+      btn.disabled=false; btn.innerHTML='🔑 Sign In';
+      return showErr('l-err','⚠ Incorrect mobile number or password');
+    }
+    localStorage.setItem('ka_user',JSON.stringify({
+      name:user.name,phone:user.phone,location:user.location,
+      state:user.state,acres:user.acres
+    }));
+    btn.innerHTML='✅ Welcome back!';
+    btn.style.background='linear-gradient(135deg,#22c55e,#15803d)';
+    setTimeout(()=>window.location.href='index.html',800);
+  },1200);
+}
+
+function fillDemo(){
+  document.getElementById('l-phone').value='9876543210';
+  document.getElementById('l-pass').value='demo1234';
+}
+
+// Splash loading bar + auto-skip if already logged in
+window.addEventListener('load',()=>{
+  if(localStorage.getItem('ka_user')){window.location.href='index.html';return;}
+  setTimeout(()=>{const b=document.getElementById('lbar');if(b)b.style.width='100%';},100);
+});
+</script>
+</body>
+</html>

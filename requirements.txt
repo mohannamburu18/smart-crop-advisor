@@ -1,0 +1,16 @@
+fastapi==0.111.0
+uvicorn==0.29.0
+python-multipart==0.0.9
+httpx==0.27.0
+pydantic==2.7.1
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+joblib==1.4.2
+Pillow==10.3.0
+tensorflow==2.16.1
+# New in v2
+deep-translator==1.11.4
+prophet==1.1.5
+statsmodels==0.14.1
+gtts==2.5.1

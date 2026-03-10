@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0a1a0f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<title>Kisan AI — Smart Crop Advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Organic Dark Agricultural
+   Palette: Deep forest dark + warm saffron gold + sage greens
+   Aesthetic: Earthy editorial — like a premium agricultural journal
+   Fonts: Playfair Display (display) + Space Grotesk (body)
+════════════════════════════════════════════════════════ */
+:root {
+  --ink:     #0a1a0f;
+  --ink2:    #152b1c;
+  --forest:  #1d4228;
+  --moss:    #2d6a3f;
+  --sage:    #4a9960;
+  --mint:    #7ec89a;
+  --mist:    #c5e8d0;
+  --fog:     #eaf5ee;
+  --saffron: #e8a020;
+  --gold:    #f5c842;
+  --amber:   #f7a825;
+  --clay:    #c4623a;
+  --sky:     #4a9ac4;
+  --bg:      #f4f0e8;
+  --paper:   #faf8f3;
+  --cream:   #fff9ef;
+  --border:  #d8d0c0;
+  --text:    #1a2a1e;
+  --sub:     #4a6250;
+  --muted:   #7a9280;
+  --sw: 260px;
+  --rad: 16px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; }
+
+/* ── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--mist); border-radius: 10px; }
+
+/* ════ SIDEBAR ════════════════════════════════════════════ */
+.sidebar {
+  position: fixed; top:0; left:0; width:var(--sw); height:100vh;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  z-index: 200;
+  overflow: hidden;
+}
+.sidebar::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,153,96,.12), transparent 70%);
+  bottom: -80px; right: -80px;
+  pointer-events: none;
+}
+.sb-top {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0;
+}
+.sb-brand {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+}
+.sb-leaf {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--sage), var(--moss));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 16px rgba(78,153,96,.3);
+  flex-shrink: 0;
+}
+.sb-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: #fff; line-height: 1.1; }
+.sb-name small { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 400; color: rgba(255,255,255,.3); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+.sb-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(248,200,66,.12); border: 1px solid rgba(248,200,66,.25); color: var(--gold); font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 50px; letter-spacing: .5px; margin-top: 10px; }
+
+/* Lang selector */
+.lang-wrap {
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  flex-shrink: 0;
+}
+.lang-wrap label {
+  font-size: 9px; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: 1px;
+  display: block; margin-bottom: 6px;
+}
+.lang-sel {
+  width: 100%;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px; font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer; outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.lang-sel option { background: #152b1c; }
+
+/* Nav */
+.sb-nav { flex: 1; overflow-y: auto; padding: 10px 0 10px; }
+.nav-section { padding: 14px 24px 6px; font-size: 9px; color: rgba(255,255,255,.2); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.ni {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 24px; cursor: pointer;
+  color: rgba(255,255,255,.4);
+  border-left: 2px solid transparent;
+  transition: all .18s;
+  position: relative;
+}
+.ni:hover { color: rgba(255,255,255,.75); background: rgba(255,255,255,.03); }
+.ni.active { color: #fff; border-left-color: var(--sage); background: rgba(78,153,96,.1); }
+.ni .n-ic { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+.ni .n-lb { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500; }
+.ni .n-new {
+  margin-left: auto;
+  background: var(--saffron);
+  color: var(--ink);
+  font-size: 8px; font-weight: 700;
+  padding: 2px 6px; border-radius: 50px;
+  letter-spacing: .5px;
+}
+.ni .n-tag {
+  margin-left: auto;
+  font-size: 9px; color: var(--mint);
+  font-weight: 600;
+}
+
+/* Sidebar footer */
+.sb-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0;
+}
+.farmer-card {
+  display: flex; align-items: center; gap: 10px;
+}
+.f-av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  border: 2px solid rgba(78,153,96,.4);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.f-info .f-name { font-size: 13px; font-weight: 600; color: #fff; }
+.f-info .f-loc { font-size: 10px; color: rgba(255,255,255,.35); }
+.f-status { margin-left: auto; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.f-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; }
+.f-dot.on { background: var(--sage); box-shadow: 0 0 8px rgba(78,153,96,.6); }
+
+/* ════ MAIN AREA ════════════════════════════════════════════ */
+.main { margin-left: var(--sw); min-height: 100vh; }
+.page { display: none; animation: pageIn .25s ease; }
+.page.active { display: block; }
+@keyframes pageIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+/* Page header */
+.page-header {
+  background: var(--ink);
+  padding: 32px 36px 28px;
+  position: relative; overflow: hidden;
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,153,96,.08) 0%, transparent 65%);
+  right: -100px; top: -150px;
+  pointer-events: none;
+}
+.page-header .ph-eyebrow {
+  font-size: 10px; color: rgba(255,255,255,.3);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 8px; font-weight: 500;
+}
+.page-header h1 {
+  font-size: 28px; color: #fff; font-weight: 900;
+  line-height: 1.1; margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.page-header p {
+  font-size: 13px; color: rgba(255,255,255,.45);
+  font-weight: 400; position: relative; z-index: 1;
+}
+.ph-actions { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); z-index: 1; }
+
+/* Content */
+.content { padding: 28px 36px; }
+
+/* ════ COMPONENT LIBRARY ════════════════════════════════════ */
+
+/* Cards */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+.card-dark {
+  background: var(--ink2);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+
+/* Grids */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+
+/* Section label */
+.sec-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 50px;
+  font-size: 10px; font-weight: 600; letter-spacing: .3px;
+}
+.b-green { background: var(--mist); color: var(--moss); }
+.b-gold { background: rgba(248,200,66,.15); color: var(--saffron); border: 1px solid rgba(248,200,66,.2); }
+.b-best { background: var(--sage); color: #fff; }
+.b-warn { background: rgba(196,98,58,.12); color: var(--clay); }
+.b-blue { background: rgba(74,154,196,.12); color: var(--sky); }
+.b-new { background: var(--saffron); color: var(--ink); font-size: 9px; }
+
+/* Inputs */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 10px; font-weight: 600;
+  color: var(--sub); text-transform: uppercase; letter-spacing: .8px;
+  margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%; padding: 11px 14px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 11px;
+  font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700;
+  color: var(--text); outline: none;
+  transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--sage); background: var(--cream);
+}
+.field-unit { position: relative; }
+.field-unit input { padding-right: 36px; }
+.unit-label {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; color: var(--muted); font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600; pointer-events: none;
+}
+.r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.r3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* Range slider */
+.range-wrap { margin-bottom: 14px; }
+.range-wrap .range-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.range-wrap .range-head label {
+  font-size: 10px; font-weight: 600; color: var(--sub);
+  text-transform: uppercase; letter-spacing: .8px;
+}
+.range-wrap .range-head .range-val {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text);
+}
+input[type=range] {
+  width: 100%; height: 4px; appearance: none;
+  background: linear-gradient(90deg, var(--sage) var(--p,50%), var(--mist) var(--p,50%));
+  border-radius: 3px; cursor: pointer; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none; width: 18px; height: 18px;
+  background: var(--forest); border: 2.5px solid #fff;
+  border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 22px; border: none; border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .18s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-primary {
+  background: var(--forest); color: #fff; width: 100%;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(29,66,40,.3);
+}
+.btn-primary:hover { background: var(--moss); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,66,40,.35); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.btn-outline {
+  background: transparent; color: var(--moss);
+  border: 1.5px solid var(--sage); padding: 9px 18px;
+}
+.btn-outline:hover { background: var(--fog); }
+.btn-gold {
+  background: var(--saffron); color: var(--ink); font-weight: 700;
+  box-shadow: 0 4px 14px rgba(232,160,32,.3);
+}
+.btn-gold:hover { background: var(--gold); transform: translateY(-1px); }
+
+/* Stat tile */
+.stat {
+  background: var(--bg); border-radius: 10px; padding: 12px 14px;
+}
+.stat .s-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.stat .s-val { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); }
+.stat.s-profit { background: rgba(78,153,96,.1); border: 1px solid rgba(78,153,96,.2); }
+.stat.s-profit .s-val { color: var(--moss); }
+
+/* Spinner */
+.spin { width:15px; height:15px; border:2px solid rgba(255,255,255,.25); border-top-color:#fff; border-radius:50%; animation:rot .7s linear infinite; display:inline-block; }
+@keyframes rot { to { transform: rotate(360deg); } }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--ink); color: #fff;
+  padding: 12px 20px; border-radius: 12px;
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  transform: translateY(70px); opacity: 0;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  z-index: 9999; border-left: 3px solid var(--sage);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.t-err { border-left-color: var(--clay); }
+.toast.t-ok { border-left-color: var(--sage); }
+
+/* Alert box */
+.alert-box {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; border-radius: 12px;
+  margin-bottom: 10px;
+}
+.alert-box .a-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.alert-box .a-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.alert-box .a-msg { font-size: 11px; color: var(--sub); margin-top: 2px; }
+.a-ok   { background: rgba(78,153,96,.08);   border: 1px solid rgba(78,153,96,.2); }
+.a-warn { background: rgba(232,160,32,.08);  border: 1px solid rgba(232,160,32,.2); }
+.a-danger { background: rgba(196,98,58,.08); border: 1px solid rgba(196,98,58,.2); }
+.a-info { background: rgba(74,154,196,.08);  border: 1px solid rgba(74,154,196,.2); }
+
+/* Empty state */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 24px; text-align: center;
+}
+.empty-state .e-icon { font-size: 52px; margin-bottom: 14px; opacity: .6; }
+.empty-state h3 { font-size: 17px; margin-bottom: 6px; color: var(--text); }
+.empty-state p { font-size: 12px; color: var(--muted); }
+
+/* ════ DASHBOARD ════════════════════════════════════════════ */
+.dash-hero {
+  background: var(--ink2);
+  border: 1px solid rgba(255,255,255,.05);
+  border-radius: 20px;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.dash-hero::before {
+  content: '';
+  position: absolute;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,153,96,.15), transparent 70%);
+  right: -50px; bottom: -50px;
+  pointer-events: none;
+}
+.dh-greeting { font-size: 11px; color: var(--mint); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 600; }
+.dh-title { font-size: 26px; color: #fff; font-weight: 900; margin-bottom: 6px; line-height: 1.2; }
+.dh-sub { font-size: 13px; color: rgba(255,255,255,.4); }
+.dh-stats { display: flex; gap: 24px; margin-top: 20px; }
+.dh-stat .dhs-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; }
+.dh-stat .dhs-lbl { font-size: 10px; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .5px; }
+.dh-weather {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: center; min-width: 160px;
+  cursor: pointer; transition: all .2s;
+  position: relative; z-index: 1;
+}
+.dh-weather:hover { background: rgba(255,255,255,.08); }
+.dh-weather .dw-icon { font-size: 38px; margin-bottom: 6px; }
+.dh-weather .dw-temp { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #fff; }
+.dh-weather .dw-loc { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 3px; }
+
+/* Feature grid */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.feat-btn {
+  border: none; cursor: pointer;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: left;
+  transition: all .22s;
+  position: relative;
+  overflow: hidden;
+}
+.feat-btn:hover { transform: translateY(-3px); }
+.feat-btn:active { transform: translateY(-1px); }
+.feat-btn .fb-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+.feat-btn .fb-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; display: block; }
+.feat-btn .fb-sub { font-size: 10px; font-weight: 500; opacity: .6; display: block; }
+.fb-forest { background: var(--forest); color: #fff; box-shadow: 0 5px 16px rgba(29,66,40,.25); }
+.fb-moss   { background: var(--moss);   color: #fff; box-shadow: 0 5px 16px rgba(45,106,63,.25); }
+.fb-gold   { background: var(--saffron); color: var(--ink); box-shadow: 0 5px 16px rgba(232,160,32,.3); }
+.fb-paper  { background: var(--paper); color: var(--text); border: 1.5px solid var(--border); }
+.fb-dark   { background: var(--ink2); color: #fff; box-shadow: 0 5px 16px rgba(10,26,15,.3); }
+.feat-btn .fb-new-tag {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--gold); color: var(--ink);
+  font-size: 8px; font-weight: 700;
+  padding: 2px 7px; border-radius: 50px;
+  letter-spacing: .5px;
+}
+
+/* Status strip */
+.status-strip {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 18px;
+  margin-bottom: 20px;
+}
+.s-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+.s-dot.on { background: var(--sage); box-shadow: 0 0 8px rgba(78,153,96,.5); }
+.s-dot.off { background: var(--clay); }
+.s-txt { font-size: 12px; font-weight: 600; color: var(--text); }
+.s-sub { font-size: 11px; color: var(--muted); margin-left: 4px; }
+
+/* ════ CROP ADVISOR ═════════════════════════════════════════ */
+.crop-layout {
+  display: grid;
+  grid-template-columns: 370px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.result-card {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.result-card:hover { border-color: var(--sage); box-shadow: 0 4px 16px rgba(78,153,96,.08); }
+.result-card.best-pick {
+  border-color: var(--sage);
+  background: linear-gradient(135deg, var(--fog), var(--paper));
+}
+.result-card .rc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.result-card .rc-crop {
+  display: flex; align-items: center; gap: 10px;
+}
+.result-card .rc-crop h3 {
+  font-size: 19px; font-weight: 800; color: var(--text);
+}
+.crop-emoji { font-size: 28px; }
+.conf-bar { height: 4px; background: var(--mist); border-radius: 2px; margin: 6px 0 12px; overflow: hidden; }
+.conf-fill { height: 100%; background: linear-gradient(90deg, var(--sage), var(--mint)); border-radius: 2px; transition: width 1s cubic-bezier(.34,1.56,.64,1); }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.profit-highlight {
+  margin-top: 12px; padding: 10px 14px;
+  background: rgba(78,153,96,.08); border-radius: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.profit-highlight .ph-label { font-size: 11px; color: var(--sub); }
+.profit-highlight .ph-val { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--moss); }
+
+/* ════ FERTILIZER ════════════════════════════════════════════ */
+.fert-card {
+  background: var(--paper); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 20px; margin-bottom: 12px;
+}
+.fert-card.best { border-color: var(--sage); background: var(--fog); }
+.fert-name { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.dosage-box {
+  background: var(--bg); border-radius: 10px; padding: 12px;
+  font-size: 12px; color: var(--sub); line-height: 1.6;
+  border-left: 3px solid var(--sage);
+}
+
+/* ════ DISEASE ════════════════════════════════════════════════ */
+.upload-zone {
+  border: 2px dashed var(--sage);
+  border-radius: 18px;
+  background: rgba(78,153,96,.03);
+  min-height: 260px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; cursor: pointer;
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.upload-zone:hover { background: rgba(78,153,96,.07); border-color: var(--moss); }
+.upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; font-size:0; }
+.upload-zone img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; border-radius:16px; display:none; }
+.disease-result {
+  background: var(--ink);
+  border-radius: 18px; padding: 24px;
+  color: #fff;
+}
+.dr-status { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 8px; }
+.dr-name { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.dr-conf { font-size: 12px; margin-bottom: 12px; }
+.dr-bar { height: 4px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; margin-bottom: 18px; }
+.dr-fill { height: 100%; background: var(--sage); border-radius: 2px; }
+.dr-treatment-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.3); margin-bottom: 6px; }
+.dr-treatment { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.6; }
+.dr-others { margin-top: 16px; }
+.dr-others-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.25); margin-bottom: 8px; }
+.dr-other-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 11px; color: rgba(255,255,255,.4); }
+
+/* ════ MARKET ═══════════════════════════════════════════════ */
+.market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.market-card {
+  background: var(--paper); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 18px;
+  transition: all .2s; cursor: pointer;
+}
+.market-card:hover { border-color: var(--sage); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(78,153,96,.1); }
+.mc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.mc-icon { font-size: 36px; }
+.mc-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); }
+.mc-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--moss); }
+.mc-price-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 1px; }
+.mc-stats { display: flex; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.mc-stat .mcs-val { font-size: 12px; font-weight: 600; color: var(--text); }
+.mc-stat .mcs-lbl { font-size: 9px; color: var(--muted); }
+.market-search {
+  width: 100%; padding: 13px 16px;
+  background: var(--paper); border: 1.5px solid var(--border);
+  border-radius: 13px; font-size: 13px; color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none; margin-bottom: 20px;
+}
+.market-search:focus { border-color: var(--sage); }
+
+/* ════ PRICE FORECAST ═══════════════════════════════════════ */
+.crop-selector { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.crop-chip {
+  padding: 8px 16px; border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--paper);
+  font-size: 12px; font-weight: 600; color: var(--sub);
+  cursor: pointer; transition: all .18s;
+  display: flex; align-items: center; gap: 6px;
+}
+.crop-chip:hover { border-color: var(--sage); color: var(--moss); background: var(--fog); }
+.crop-chip.selected { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+.forecast-card {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 18px; padding: 24px; margin-bottom: 16px;
+}
+.fc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.fc-emoji { font-size: 40px; }
+.fc-crop-name { font-size: 22px; font-weight: 800; color: var(--text); }
+.fc-sub { font-size: 12px; color: var(--muted); }
+
+/* Bar chart for forecast */
+.forecast-bars {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 10px; align-items: end; margin-top: 16px;
+  height: 160px; position: relative;
+}
+.forecast-bars::before {
+  content: '';
+  position: absolute; left: 0; right: 0;
+  border-top: 1px dashed var(--border);
+  top: 0; bottom: 50%;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.bar-col .bar-fill {
+  width: 100%; border-radius: 8px 8px 0 0;
+  min-height: 20px;
+  background: var(--mist);
+  transition: height 1s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+}
+.bar-col.best-bar .bar-fill { background: linear-gradient(180deg, var(--mint), var(--sage)); }
+.bar-col.worst-bar .bar-fill { background: rgba(196,98,58,.3); }
+.bar-col .bar-price { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: var(--text); }
+.bar-col .bar-month { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+.bar-col .bar-best-lbl { font-size: 8px; color: var(--sage); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+
+.trend-banner {
+  margin-top: 16px; padding: 14px 18px;
+  border-radius: 12px; font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+}
+.trend-up   { background: rgba(78,153,96,.08);   border: 1px solid rgba(78,153,96,.2);   color: var(--moss); }
+.trend-down { background: rgba(196,98,58,.08);   border: 1px solid rgba(196,98,58,.2);   color: var(--clay); }
+.trend-flat { background: rgba(122,146,128,.08); border: 1px solid rgba(122,146,128,.2); color: var(--sub); }
+
+.best-worst-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 14px;
+}
+.bw-card { border-radius: 12px; padding: 14px 16px; }
+.bw-card.bw-best { background: rgba(78,153,96,.1); border: 1px solid rgba(78,153,96,.25); }
+.bw-card.bw-worst { background: rgba(122,146,128,.07); border: 1px solid var(--border); }
+.bw-label { font-size: 9px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+.bw-month { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); }
+.bw-price { font-size: 12px; color: var(--sub); margin-top: 3px; }
+
+/* ════ WEATHER ════════════════════════════════════════════════ */
+.weather-hero {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink2) 60%, var(--forest) 100%);
+  border-radius: 20px; padding: 32px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 24px; align-items: center;
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+}
+.weather-hero::after {
+  content: '';
+  position: absolute;
+  width: 350px; height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,153,96,.12), transparent 70%);
+  right: -80px; top: -80px; pointer-events: none;
+}
+.wh-icon { font-size: 80px; position: relative; z-index: 1; }
+.wh-temp { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; color: #fff; line-height: 1; position: relative; z-index: 1; }
+.wh-desc { font-size: 13px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 2px; margin: 6px 0 4px; }
+.wh-loc { font-family: 'Playfair Display', serif; font-size: 17px; color: rgba(255,255,255,.6); }
+.wh-stats-col { display: flex; gap: 28px; margin-top: 20px; position: relative; z-index: 1; }
+.whs .whs-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #fff; }
+.whs .whs-lbl { font-size: 9px; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .5px; }
+
+/* 7-day strip */
+.forecast-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 22px; }
+.day-card {
+  background: var(--paper); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 14px 8px; text-align: center;
+  transition: all .2s;
+}
+.day-card:hover { transform: translateY(-2px); border-color: var(--sage); }
+.day-card.dc-danger { border-color: rgba(196,98,58,.4); background: rgba(196,98,58,.04); }
+.day-card.dc-warn { border-color: rgba(232,160,32,.35); background: rgba(232,160,32,.03); }
+.day-card .dc-date { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.day-card .dc-icon { font-size: 26px; margin-bottom: 7px; }
+.day-card .dc-temps { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--text); }
+.day-card .dc-rain { font-size: 10px; color: var(--sky); margin-top: 5px; min-height: 14px; }
+.day-card .dc-alert { font-size: 9px; color: var(--sub); margin-top: 5px; line-height: 1.3; }
+
+/* ════ CHATBOT ════════════════════════════════════════════════ */
+.chat-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+.chat-window {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  display: flex; flex-direction: column;
+  height: 580px; overflow: hidden;
+}
+.chat-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  background: var(--cream);
+  flex-shrink: 0;
+}
+.chat-av {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.chat-av-info h3 { font-size: 14px; font-weight: 700; color: var(--text); }
+.chat-av-info p { font-size: 11px; color: var(--muted); }
+.chat-online { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--sage); font-weight: 600; }
+.chat-online::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--sage); }
+
+.chat-messages { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.msg {
+  max-width: 82%; padding: 11px 15px;
+  border-radius: 16px; font-size: 13px; line-height: 1.55; word-wrap: break-word;
+}
+.msg-bot { background: var(--bg); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); }
+.msg-user { background: var(--forest); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.msg-typing { background: var(--bg); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; padding: 14px 18px; }
+.typing-dots { display: flex; gap: 5px; align-items: center; }
+.typing-dots span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--muted);
+  animation: td 1.3s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .18s; }
+.typing-dots span:nth-child(3) { animation-delay: .36s; }
+@keyframes td { 0%,60%,100% { transform: translateY(0); opacity:.5; } 30% { transform: translateY(-8px); opacity:1; } }
+
+.chat-input-bar {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px; flex-shrink: 0;
+  background: var(--cream);
+}
+.chat-input-bar input {
+  flex: 1; padding: 11px 16px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 12px; font-size: 13px; color: var(--text);
+  font-family: 'Space Grotesk', sans-serif; outline: none;
+}
+.chat-input-bar input:focus { border-color: var(--sage); background: var(--cream); }
+.chat-send {
+  padding: 11px 18px;
+  background: var(--forest); color: #fff;
+  border: none; border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.chat-send:hover { background: var(--moss); }
+
+/* Quick questions panel */
+.quick-panel .qp-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.quick-btn {
+  width: 100%; text-align: left;
+  padding: 10px 14px; border-radius: 11px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  font-size: 12px; color: var(--text); cursor: pointer;
+  transition: all .18s; margin-bottom: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.quick-btn:hover { background: var(--fog); border-color: var(--sage); }
+.lang-panel { margin-top: 4px; }
+.lang-panel label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; display: block; margin-bottom: 7px; }
+.lang-panel select {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--border); border-radius: 11px;
+  font-size: 13px; color: var(--text); background: var(--bg);
+  font-family: 'Space Grotesk', sans-serif; outline: none; appearance: none;
+  cursor: pointer;
+}
+.lang-panel select:focus { border-color: var(--sage); }
+
+/* ════ PROFILE ═══════════════════════════════════════════════ */
+.profile-layout { display: grid; grid-template-columns: 300px 1fr; gap: 22px; align-items: start; }
+.profile-hero {
+  background: var(--ink);
+  border-radius: 20px; padding: 28px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.profile-hero::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(78,153,96,.2), transparent 70%);
+  bottom: -50px; left: 50%; transform: translateX(-50%);
+}
+.p-av {
+  width: 78px; height: 78px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  border: 3px solid rgba(78,153,96,.35);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: #fff;
+  margin: 0 auto 16px;
+}
+.p-name { font-size: 20px; color: #fff; font-weight: 800; }
+.p-loc { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 4px; }
+.p-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+.p-stat { background: rgba(255,255,255,.07); border-radius: 10px; padding: 12px 8px; text-align: center; }
+.p-stat-val { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--mint); }
+.p-stat-lbl { font-size: 9px; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+
+.settings-section { margin-bottom: 20px; }
+.setting-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 16px; background: var(--paper);
+  border-bottom: 1px solid var(--border);
+  transition: background .15s; cursor: pointer;
+}
+.setting-row:first-child { border-radius: 14px 14px 0 0; }
+.setting-row:last-child { border-radius: 0 0 14px 14px; border-bottom: none; }
+.setting-row:only-child { border-radius: 14px; border-bottom: none; }
+.setting-row:hover { background: var(--fog); }
+.sr-icon { font-size: 18px; width: 24px; text-align: center; }
+.sr-label { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.sr-val { font-size: 12px; color: var(--muted); }
+
+/* ════ RESPONSIVE ════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .feat-grid { grid-template-columns: repeat(3, 1fr); }
+  .forecast-bars { height: 130px; }
+}
+@media (max-width: 900px) {
+  :root { --sw: 0px; }
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .content { padding: 18px; }
+  .page-header { padding: 22px 18px; }
+  .crop-layout, .chat-layout, .profile-layout { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .g3, .g4, .market-grid { grid-template-columns: 1fr 1fr; }
+  .forecast-strip { grid-template-columns: repeat(4, 1fr); }
+  .forecast-bars { grid-template-columns: repeat(3, 1fr); height: 120px; }
+  .weather-hero { grid-template-columns: 1fr; }
+  .ph-actions { position: static; margin-top: 12px; }
+  .dash-hero { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ████████ SIDEBAR ████████ -->
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-brand">
+      <div class="sb-leaf">🌿</div>
+      <div class="sb-name">Kisan AI<small>Smart Crop Advisor v2</small></div>
+    </div>
+    <div class="sb-badge">✨ AI Powered · Smart Crop Advisor</div>
+  </div>
+
+  <div class="lang-wrap">
+    <label>🌐 Language / भाषा / భాష</label>
+    <select class="lang-sel" id="global-lang" onchange="setGlobalLang(this.value)">
+      <option value="en">🇬🇧 English</option>
+      <option value="hi">🇮🇳 हिंदी — Hindi</option>
+      <option value="te">🇮🇳 తెలుగు — Telugu</option>
+      <option value="ta">🇮🇳 தமிழ் — Tamil</option>
+      <option value="kn">🇮🇳 ಕನ್ನಡ — Kannada</option>
+      <option value="mr">🇮🇳 मराठी — Marathi</option>
+      <option value="bn">🇮🇳 বাংলা — Bengali</option>
+      <option value="gu">🇮🇳 ગુજરાતી — Gujarati</option>
+      <option value="pa">🇮🇳 ਪੰਜਾਬੀ — Punjabi</option>
+    </select>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="nav-section">Overview</div>
+    <div class="ni active" onclick="nav('dash')"><span class="n-ic">🏠</span><span class="n-lb">Dashboard</span></div>
+
+    <div class="nav-section">Advisory</div>
+    <div class="ni" onclick="nav('crop')"><span class="n-ic">🌾</span><span class="n-lb">Crop Advisor</span></div>
+    <div class="ni" onclick="nav('fert')"><span class="n-ic">🧪</span><span class="n-lb">Fertilizer</span></div>
+    <div class="ni" onclick="nav('dis')"><span class="n-ic">🔬</span><span class="n-lb">Disease Scan</span></div>
+
+    <div class="nav-section">Market & Weather</div>
+    <div class="ni" onclick="nav('mkt')"><span class="n-ic">📊</span><span class="n-lb">Market Prices</span></div>
+    <div class="ni" onclick="nav('forecast')"><span class="n-ic">📈</span><span class="n-lb">Price Forecast</span></div>
+    <div class="ni" onclick="nav('wx')"><span class="n-ic">🌦️</span><span class="n-lb">Weather</span></div>
+
+    <div class="nav-section">Intelligence</div>
+    <div class="ni" onclick="nav('chat')"><span class="n-ic">🤖</span><span class="n-lb">AI Assistant</span></div>
+
+    <div class="nav-section">My Farm</div>
+    <div class="ni" onclick="nav('history')"><span class="n-ic">📋</span><span class="n-lb">Rec. History</span></div>
+    <div class="ni" onclick="nav('profit')"><span class="n-ic">💰</span><span class="n-lb">Profit Advisory</span></div>
+    <div class="ni" onclick="nav('lang')"><span class="n-ic">🌐</span><span class="n-lb">Languages</span></div>
+    <div class="ni" onclick="nav('wxalerts')"><span class="n-ic">⚠️</span><span class="n-lb">Weather Alerts</span></div>
+
+    <div class="nav-section">Account</div>
+    <div class="ni" onclick="nav('profile')"><span class="n-ic">⚙️</span><span class="n-lb">Profile & Settings</span></div>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="farmer-card">
+      <div class="f-av" id="sb-av">RK</div>
+      <div class="f-info">
+        <div class="f-name" id="sb-name">Rajesh Kumar</div>
+        <div class="f-loc" id="sb-loc">Maharashtra · 2.5 ac</div>
+      </div>
+      <div class="f-status">
+        <div class="f-dot" id="sb-dot"></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ████████ MAIN ████████ -->
+<main class="main">
+
+<!-- ══ DASHBOARD ══════════════════════════════════════════════ -->
+<div class="page active" id="page-dash">
+  <div class="page-header">
+    <div class="ph-eyebrow">Kisan AI · Smart Crop Advisor</div>
+    <h1 id="dash-greet">Good Morning, Rajesh 🌅</h1>
+    <p>Your AI-powered profit-first farming companion</p>
+  </div>
+  <div class="content">
+    <!-- Status + Hero row -->
+    <div class="status-strip">
+      <div class="s-dot" id="s-dot"></div>
+      <span class="s-txt" id="s-txt">Checking server...</span>
+      <span class="s-sub" id="s-sub">localhost:8001</span>
+      <button class="btn btn-outline" style="margin-left:auto;padding:6px 14px;font-size:11px" onclick="checkServer()">↺ Ping</button>
+    </div>
+
+    <div class="dash-hero">
+      <div>
+        <div class="dh-greeting">🌿 Today's Overview</div>
+        <div class="dh-title" id="dash-title">Kharif Season 2026<br>Maharashtra, India</div>
+        <div class="dh-sub">Your AI crop advisor is ready with profit-ranked recommendations</div>
+        <div class="dh-stats">
+          <div class="dh-stat"><div class="dhs-val">2.5</div><div class="dhs-lbl">Acres</div></div>
+          <div class="dh-stat"><div class="dhs-val">₹4.5L</div><div class="dhs-lbl">Target Profit</div></div>
+          <div class="dh-stat"><div class="dhs-val">9</div><div class="dhs-lbl">Languages</div></div>
+          <div class="dh-stat"><div class="dhs-val">12</div><div class="dhs-lbl">Crops Tracked</div></div>
+        </div>
+      </div>
+      <div class="dh-weather" onclick="nav('wx')">
+        <div class="dw-icon" id="dw-icon">🌤️</div>
+        <div class="dw-temp" id="dw-temp">--°</div>
+        <div id="dw-desc" style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Tap for forecast</div>
+        <div class="dw-loc" id="dw-loc">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Feature grid -->
+    <div class="sec-label">What do you need today?</div>
+    <div class="feat-grid">
+      <button class="feat-btn fb-forest" onclick="nav('crop')">
+        <span class="fb-icon">🌾</span>
+        <span class="fb-title">Crop Advisor</span>
+        <span class="fb-sub">AI profit-ranked picks</span>
+      </button>
+      <button class="feat-btn fb-moss" onclick="nav('fert')">
+        <span class="fb-icon">🧪</span>
+        <span class="fb-title">Fertilizer</span>
+        <span class="fb-sub">Soil-based guide</span>
+      </button>
+      <button class="feat-btn fb-paper" onclick="nav('dis')">
+        <span class="fb-icon">🔬</span>
+        <span class="fb-title">Disease Scan</span>
+        <span class="fb-sub">Upload leaf photo</span>
+      </button>
+      <button class="feat-btn fb-paper" onclick="nav('mkt')">
+        <span class="fb-icon">📊</span>
+        <span class="fb-title">Market Prices</span>
+        <span class="fb-sub">Current MSP rates</span>
+      </button>
+      <button class="feat-btn fb-gold" onclick="nav('forecast')">
+        <span class="fb-icon">📈</span>
+        <span class="fb-title">Price Forecast</span>
+        <span class="fb-sub">6-month AI prediction</span>
+        
+      </button>
+      <button class="feat-btn fb-paper" onclick="nav('wx')">
+        <span class="fb-icon">🌦️</span>
+        <span class="fb-title">7-Day Weather</span>
+        <span class="fb-sub">Farm alerts daily</span>
+        
+      </button>
+      <button class="feat-btn fb-dark" onclick="nav('chat')" style="grid-column: span 2">
+        <span class="fb-icon">🤖</span>
+        <span class="fb-title">AI Assistant — Ask in your language</span>
+        <span class="fb-sub">Hindi · Telugu · Tamil · Kannada · Marathi · Bengali · and more</span>
+        
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CROP ADVISOR ══════════════════════════════════════════ -->
+<div class="page" id="page-crop">
+  <div class="page-header">
+    <div class="ph-eyebrow">Advisory → Crop Recommendation</div>
+    <h1>🌾 Crop Advisor</h1>
+    <p>Enter soil & climate data — get profit-ranked crop recommendations</p>
+  </div>
+  <div class="content">
+    <div class="crop-layout">
+      <!-- Input form -->
+      <div class="card">
+        <div class="sec-label" style="margin-bottom:14px">🧫 Soil Nutrients</div>
+        <div class="r3">
+          <div class="field"><label>Nitrogen (N)</label><div class="field-unit"><input type="number" id="c-n" value="90"><span class="unit-label">mg</span></div></div>
+          <div class="field"><label>Phosphorus (P)</label><div class="field-unit"><input type="number" id="c-p" value="42"><span class="unit-label">mg</span></div></div>
+          <div class="field"><label>Potassium (K)</label><div class="field-unit"><input type="number" id="c-k" value="43"><span class="unit-label">mg</span></div></div>
+        </div>
+        <div class="sec-label" style="margin:16px 0 10px">🌡️ Climate</div>
+        <div class="range-wrap">
+          <div class="range-head"><label>Temperature</label><span class="range-val" id="c-tv">25°C</span></div>
+          <input type="range" id="c-t" min="5" max="50" value="25" oninput="$('c-tv').textContent=this.value+'°C';updateRange(this)">
+        </div>
+        <div class="r2">
+          <div class="field"><label>Humidity</label><div class="field-unit"><input type="number" id="c-h" value="82"><span class="unit-label">%</span></div></div>
+          <div class="field"><label>Rainfall</label><div class="field-unit"><input type="number" id="c-rf" value="202"><span class="unit-label">mm</span></div></div>
+        </div>
+        <div class="sec-label" style="margin:16px 0 10px">🌍 Field Info</div>
+        <div class="r2">
+          <div class="field"><label>Soil pH</label><div class="field-unit"><input type="number" id="c-ph" value="6.5" step="0.1"><span class="unit-label">pH</span></div></div>
+          <div class="field"><label>Land Area</label><div class="field-unit"><input type="number" id="c-ac" value="1" step="0.5"><span class="unit-label">ac</span></div></div>
+        </div>
+        <button class="btn btn-primary" id="crop-btn" onclick="doCrop()">✨ Calculate Best Crops</button>
+      </div>
+
+      <!-- Results -->
+      <div id="crop-results">
+        <div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px">
+          <div class="e-icon">🌱</div>
+          <h3>Results appear here</h3>
+          <p>Fill the form and click Calculate</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FERTILIZER ════════════════════════════════════════════ -->
+<div class="page" id="page-fert">
+  <div class="page-header">
+    <div class="ph-eyebrow">Advisory → Fertilizer</div>
+    <h1>🧪 Fertilizer Advisor</h1>
+    <p>Soil-specific fertilizer recommendation with application guide</p>
+  </div>
+  <div class="content">
+    <div class="crop-layout">
+      <div class="card">
+        <div class="sec-label" style="margin-bottom:14px">🌍 Soil & Crop</div>
+        <div class="r2">
+          <div class="field">
+            <label>Soil Type</label>
+            <select id="f-soil">
+              <option>Sandy</option><option>Loamy</option><option>Black</option><option>Red</option><option>Clayey</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Crop Type</label>
+            <select id="f-crop">
+              <option>Maize</option><option>Sugarcane</option><option>Cotton</option><option>Tobacco</option>
+              <option>Paddy</option><option>Barley</option><option>Wheat</option><option>Millets</option>
+              <option>Oil seeds</option><option>Pulses</option><option>Ground Nuts</option>
+            </select>
+          </div>
+        </div>
+        <div class="sec-label" style="margin:16px 0 10px">🌡️ Conditions</div>
+        <div class="r3">
+          <div class="field"><label>Temperature</label><div class="field-unit"><input type="number" id="f-t" value="26"><span class="unit-label">°C</span></div></div>
+          <div class="field"><label>Humidity</label><div class="field-unit"><input type="number" id="f-h" value="52"><span class="unit-label">%</span></div></div>
+          <div class="field"><label>Moisture</label><div class="field-unit"><input type="number" id="f-m" value="38"><span class="unit-label">%</span></div></div>
+        </div>
+        <div class="sec-label" style="margin:16px 0 10px">🧪 Soil Nutrients</div>
+        <div class="r3">
+          <div class="field"><label>Nitrogen</label><div class="field-unit"><input type="number" id="f-n" value="37"><span class="unit-label">mg</span></div></div>
+          <div class="field"><label>Potassium</label><div class="field-unit"><input type="number" id="f-k" value="0"><span class="unit-label">mg</span></div></div>
+          <div class="field"><label>Phosphorous</label><div class="field-unit"><input type="number" id="f-p" value="0"><span class="unit-label">mg</span></div></div>
+        </div>
+        <button class="btn btn-primary" id="fert-btn" onclick="doFert()">🧪 Get Fertilizer Advice</button>
+      </div>
+      <div id="fert-results">
+        <div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px">
+          <div class="e-icon">🌿</div><h3>Results appear here</h3><p>Fill the form and click Get Advice</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DISEASE ════════════════════════════════════════════════ -->
+<div class="page" id="page-dis">
+  <div class="page-header">
+    <div class="ph-eyebrow">Advisory → Disease Detection</div>
+    <h1>🔬 Disease Scan</h1>
+    <p>Upload a leaf photo — MobileNetV2 AI detects disease in seconds</p>
+  </div>
+  <div class="content">
+    <div class="g2" style="align-items:start">
+      <div>
+        <div class="upload-zone" id="upload-zone" ondragover="event.preventDefault()" ondrop="dropFile(event)">
+          <input type="file" id="dis-file" accept="image/*" onchange="pickFile(event)">
+          <img id="dis-preview" alt="">
+          <div id="uz-content" style="display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none">
+            <span style="font-size:52px">🍃</span>
+            <h3 style="font-size:15px;font-weight:700;color:var(--text)">Drop leaf image here</h3>
+            <p style="font-size:12px;color:var(--muted)">or click to browse · JPG, PNG supported</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="dis-btn" onclick="doDisease()" style="margin-top:14px" disabled>🔍 Scan for Disease</button>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">
+          Supports 16 disease classes · Tomato, Potato, Pepper leaves
+        </p>
+      </div>
+      <div id="dis-results">
+        <div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px">
+          <div class="e-icon">🔬</div><h3>Upload a leaf image</h3><p>AI will identify the disease and suggest treatment</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MARKET PRICES ═══════════════════════════════════════════ -->
+<div class="page" id="page-mkt">
+  <div class="page-header">
+    <div class="ph-eyebrow">Market & Weather → Prices</div>
+    <h1>📊 Market Prices</h1>
+    <p>Current MSP rates · profit per acre analysis</p>
+  </div>
+  <div class="content">
+    <input class="market-search" type="text" placeholder="🔍  Search crops — rice, wheat, cotton..." oninput="filterMarket(this.value)">
+    <div class="market-grid" id="market-grid"></div>
+  </div>
+</div>
+
+<!-- ══ PRICE FORECAST ══════════════════════════════════════════ -->
+<div class="page" id="page-forecast">
+  <div class="page-header">
+    <div class="ph-eyebrow">Market & Weather → Price Forecast</div>
+    <h1>📈 6-Month Price Forecast</h1>
+    <p>AI predicts crop prices using Prophet time-series model — find your best selling month</p>
+  </div>
+  <div class="content">
+    <div class="card" style="margin-bottom:20px">
+      <div class="sec-label" style="margin-bottom:12px">Select a crop to forecast</div>
+      <div class="crop-selector" id="forecast-chips"></div>
+    </div>
+    <div id="forecast-result">
+      <div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px">
+        <div class="e-icon">📈</div><h3>Select a crop above</h3><p>See the AI-predicted price trend for next 6 months</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WEATHER ════════════════════════════════════════════════ -->
+<div class="page" id="page-wx">
+  <div class="page-header">
+    <div class="ph-eyebrow">Market & Weather → Forecast</div>
+    <h1>🌦️ Weather & 7-Day Forecast</h1>
+    <p>Real-time weather with farmer-specific daily alerts</p>
+  </div>
+  <div class="content">
+    <!-- Current weather hero -->
+    <div class="weather-hero">
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Current Weather</div>
+        <div class="wh-temp" id="wx-temp">--°</div>
+        <div class="wh-desc" id="wx-desc">Loading...</div>
+        <div class="wh-loc" id="wx-loc">Fetching location...</div>
+        <div class="wh-stats-col">
+          <div class="whs"><div class="whs-val" id="wx-hum">--%</div><div class="whs-lbl">Humidity</div></div>
+          <div class="whs"><div class="whs-val" id="wx-rain">--mm</div><div class="whs-lbl">Rainfall</div></div>
+          <div class="whs"><div class="whs-val" id="wx-feel">--°</div><div class="whs-lbl">Feels Like</div></div>
+        </div>
+      </div>
+      <div class="wh-icon" id="wx-icon">🌤️</div>
+    </div>
+
+    <!-- 7-day forecast -->
+    <div class="sec-label">7-Day Forecast</div>
+    <div class="forecast-strip" id="forecast-strip">
+      <div style="grid-column:span 7;padding:30px;text-align:center">
+        <div style="font-size:40px;margin-bottom:10px">🔑</div>
+        <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:6px">Add API key in Profile</div>
+        <div style="font-size:12px;color:var(--muted)">Enter OpenWeatherMap key in Profile → Settings to see 7-day forecast</div>
+        <button class="btn btn-outline" style="margin-top:14px" onclick="nav('profile')">⚙️ Go to Settings</button>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="sec-label" style="margin-top:22px">Today's Farm Alerts</div>
+    <div id="wx-alerts"></div>
+
+    <!-- Tips -->
+    <div class="sec-label" style="margin-top:18px">Crop Tips Based on Weather</div>
+    <div id="wx-tips"></div>
+  </div>
+</div>
+
+<!-- ══ AI CHATBOT ════════════════════════════════════════════ -->
+<div class="page" id="page-chat">
+  <div class="page-header">
+    <div class="ph-eyebrow">Intelligence → AI Assistant</div>
+    <h1>🤖 Kisan AI Assistant</h1>
+    <p>Ask farming questions in Hindi, Telugu, Tamil, Kannada, Marathi — or English</p>
+  </div>
+  <div class="content">
+    <div class="chat-layout">
+      <!-- Chat window -->
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-av">🌾</div>
+          <div class="chat-av-info">
+            <h3>Kisan AI</h3>
+            <p>Expert farming advisor · 9 languages</p>
+          </div>
+          <div class="chat-online">Online</div>
+        </div>
+
+        <div class="chat-messages" id="chat-msgs">
+          <div class="msg msg-bot">
+            🙏 <strong>Namaste!</strong> I am Kisan AI — your smart farming assistant.<br><br>
+            I can help you with:<br>
+            🌾 Crop advice &amp; cultivation tips<br>
+            🧪 Fertilizer recommendations<br>
+            🌡️ Weather-based farming guidance<br>
+            📊 Market prices &amp; best selling time<br>
+            🔬 Disease identification &amp; treatment<br>
+            🏛️ Government schemes (PM-KISAN, insurance)<br><br>
+            Ask in <strong>Hindi, Telugu, Tamil, Kannada, Marathi</strong> or English!
+          </div>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="chat-in" placeholder="Type your farming question..." onkeypress="if(event.key==='Enter')sendMsg()">
+          <button class="chat-send" onclick="sendMsg()">Send ›</button>
+        </div>
+      </div>
+
+      <!-- Sidebar panel -->
+      <div>
+        <div class="card quick-panel" style="margin-bottom:14px">
+          <div class="qp-title">💬 Quick Questions</div>
+          <button class="quick-btn" onclick="askQuick('When is the best time to water my crops?')">💧 Best time to water?</button>
+          <button class="quick-btn" onclick="askQuick('What fertilizer should I use for rice?')">🌾 Fertilizer for rice?</button>
+          <button class="quick-btn" onclick="askQuick('My tomato leaves are turning yellow — what disease is this?')">🍅 Yellow tomato leaves?</button>
+          <button class="quick-btn" onclick="askQuick('What is the current MSP for wheat in 2026?')">📊 Wheat MSP price?</button>
+          <button class="quick-btn" onclick="askQuick('How to protect crops from heavy rain and flooding?')">🌧️ Protect from rain?</button>
+          <button class="quick-btn" onclick="askQuick('Explain PM-KISAN scheme benefits for small farmers')">🏛️ PM-KISAN scheme?</button>
+          <button class="quick-btn" onclick="askQuick('मेरी फसल के लिए सबसे अच्छा उर्वरक कौनसा है?')" style="background:#f4f0e8">🇮🇳 हिंदी में पूछें</button>
+          <button class="quick-btn" onclick="askQuick('నా వరి పంటకు ఏ ఎరువు వాడాలి?')" style="background:#f4f0e8">🇮🇳 తెలుగులో అడగండి</button>
+        </div>
+
+        <div class="card lang-panel">
+          <label>Response Language</label>
+          <select id="chat-lang" onchange="LANG=this.value;$('global-lang').value=this.value">
+            <option value="en">🇬🇧 English</option>
+            <option value="hi">🇮🇳 हिंदी</option>
+            <option value="te">🇮🇳 తెలుగు</option>
+            <option value="ta">🇮🇳 தமிழ்</option>
+            <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+            <option value="mr">🇮🇳 मराठी</option>
+            <option value="bn">🇮🇳 বাংলা</option>
+            <option value="gu">🇮🇳 ગુજરાતી</option>
+            <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+          </select>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="sec-label" style="margin-bottom:8px">About Kisan AI</div>
+          <p style="font-size:12px;color:var(--sub);line-height:1.6">Uses Google Gemini AI with a farming knowledge base. Falls back to built-in rule-based answers if API key not set. Add your Gemini key in <span style="color:var(--moss);cursor:pointer;font-weight:600" onclick="nav('profile')">Profile → Settings</span>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ════════════════════════════════════════════════ -->
+<div class="page" id="page-profile">
+  <div class="page-header">
+    <div class="ph-eyebrow">Account → Profile</div>
+    <h1>👤 Profile & Settings</h1>
+    <p>Farm profile, API keys, and app configuration</p>
+  </div>
+  <div class="content">
+    <div class="profile-layout">
+      <!-- Profile card -->
+      <div>
+        <div class="profile-hero" style="margin-bottom:16px">
+          <div class="p-av" id="p-av-initials">RK</div>
+          <div class="p-name" id="p-fullname">Rajesh Kumar</div>
+          <div class="p-loc" id="p-location">Maharashtra, India · Kharif &amp; Rabi</div>
+          <div style="margin-top:12px"><span class="badge b-gold">⭐ Pro Member</span></div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-val">28</div><div class="p-stat-lbl">Advisories</div></div>
+            <div class="p-stat"><div class="p-stat-val">14</div><div class="p-stat-lbl">Scans</div></div>
+            <div class="p-stat"><div class="p-stat-val">₹2.1L</div><div class="p-stat-lbl">Saved</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:14px">⚙️ API Configuration</div>
+          <div class="field"><label>Backend URL</label><input type="text" id="cfg-url" value="http://localhost:8001" style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500"></div>
+          <div class="field"><label>OpenWeatherMap API Key</label><input type="text" id="cfg-wkey" placeholder="Paste your key here..." style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500"></div>
+          <div class="field"><label>Google Gemini API Key (AI Chatbot)</label><input type="password" id="cfg-akey" placeholder="AIza..." style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500"></div>
+          <button class="btn btn-primary" onclick="saveConfig()">💾 Save Configuration</button>
+        </div>
+      </div>
+
+      <!-- Settings + what's new -->
+      <div>
+        <div class="sec-label" style="margin-bottom:10px">Farm Settings</div>
+        <div class="settings-section">
+          <div class="setting-row"><span class="sr-icon">🌾</span><span class="sr-label">Farm Name</span><span class="sr-val" id="p-farm-name">Rajesh Farm</span></div>
+          <div class="setting-row"><span class="sr-icon">📍</span><span class="sr-label">Location</span><span class="sr-val" id="p-farm-loc">Maharashtra, India</span></div>
+          <div class="setting-row"><span class="sr-icon">📱</span><span class="sr-label">Mobile</span><span class="sr-val" id="p-mobile">+91 98765 43210</span></div>
+          <div class="setting-row"><span class="sr-icon">🌱</span><span class="sr-label">Land Area</span><span class="sr-val" id="p-acres">2.5 Acres</span></div>
+          <div class="setting-row"><span class="sr-icon">🌍</span><span class="sr-label">Soil Type</span><span class="sr-val" id="p-soil">Black (Regur)</span></div>
+          <div class="setting-row"><span class="sr-icon">💧</span><span class="sr-label">Irrigation</span><span class="sr-val" id="p-irrigation">Canal-based</span></div>
+          <div class="setting-row"><span class="sr-icon">🌐</span><span class="sr-label">Language</span><span class="sr-val" id="p-lang-val">English</span></div>
+          <div class="setting-row" style="cursor:pointer" onclick="if(confirm('Sign out?')){localStorage.removeItem('ka_user');window.location.href='auth.html';}"><span class="sr-icon">🚪</span><span class="sr-label" style="color:var(--clay)">Sign Out</span><span class="sr-val" style="color:var(--clay)">→</span></div>
+        </div>
+
+        
+
+        <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">
+
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ LANGUAGES ════════════════════════════════════════ -->
+<div class="page" id="page-lang">
+  <div class="page-header">
+    <div class="ph-eyebrow">Intelligence → Language</div>
+    <h1>🌐 Multilingual Support</h1>
+    <p>Use Kisan AI in your native language — all 9 Indian languages supported</p>
+  </div>
+  <div class="content">
+    <div class="g2" style="align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="sec-label">Choose Your Language / अपनी भाषा चुनें</div>
+        <div id="lang-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"></div>
+
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:14px">🔄 Live Translation Demo</div>
+          <div class="field"><label>Enter text in English</label><textarea id="trans-input" placeholder="e.g. What is the best crop for black soil?" style="height:80px;resize:none;padding:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;width:100%;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--text);outline:none;line-height:1.5;display:block"></textarea></div>
+          <div class="field"><label>Translate To</label><select id="trans-lang"><option value="hi">हिंदी (Hindi)</option><option value="te">తెలుగు (Telugu)</option><option value="ta">தமிழ் (Tamil)</option><option value="kn">ಕನ್ನಡ (Kannada)</option><option value="mr">मराठी (Marathi)</option><option value="bn">বাংলা (Bengali)</option><option value="gu">ગુજરાતી (Gujarati)</option><option value="pa">ਪੰਜਾਬੀ (Punjabi)</option></select></div>
+          <button class="btn btn-primary" style="margin-bottom:12px" onclick="doTranslate()">🌐 Translate</button>
+          <div id="trans-output" style="min-height:60px;padding:14px;background:var(--fog);border:1.5px solid rgba(78,153,96,.2);border-radius:11px;font-size:15px;color:var(--moss);font-weight:500;line-height:1.6;display:none"></div>
+        </div>
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:12px">💬 Common Farming Phrases</div>
+          <div id="phrases-list" style="display:flex;flex-direction:column"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RECOMMENDATION HISTORY ════════════════════════════ -->
+<div class="page" id="page-history">
+  <div class="page-header">
+    <div class="ph-eyebrow">My Farm → History</div>
+    <h1>📋 Recommendation History</h1>
+    <p>AI-powered profit insights — all past advisories tracked</p>
+  </div>
+  <div class="content">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button onclick="filterHistory('all')"    id="filt-all"    class="btn btn-outline" style="padding:8px 18px;font-size:12px;width:auto;background:var(--fog)">All</button>
+      <button onclick="filterHistory('profit')" id="filt-profit" class="btn btn-outline" style="padding:8px 18px;font-size:12px;width:auto">Highest Profit</button>
+      <button onclick="filterHistory('latest')" id="filt-latest" class="btn btn-outline" style="padding:8px 18px;font-size:12px;width:auto">Latest</button>
+      <button onclick="filterHistory('arch')"   id="filt-arch"   class="btn btn-outline" style="padding:8px 18px;font-size:12px;width:auto">Archived</button>
+      <div style="margin-left:auto;font-size:12px;color:var(--muted)" id="hist-count">Showing 6 records</div>
+    </div>
+    <div id="history-list" style="display:flex;flex-direction:column;gap:0">
+    </div></div>
+    <div class="card" style="background:linear-gradient(135deg,var(--forest),var(--ink2));border-color:rgba(78,153,96,.2)">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;text-align:center">
+        <div><div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff">6</div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Advisories</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--mint)">₹1.62L</div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Total Profit</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold)">5</div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Completed</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff">83%</div><div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Accuracy</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFIT ADVISORY ════════════════════════════════════ -->
+<div class="page" id="page-profit">
+  <div class="page-header">
+    <div class="ph-eyebrow">My Farm → Profit</div>
+    <h1>💰 Profit Advisory</h1>
+    <p>₹ PROFIT AWARE — maximize your returns this Kharif 2026 season</p>
+  </div>
+  <div class="content">
+    <div class="g2" style="align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:linear-gradient(135deg,var(--forest) 0%,var(--ink3) 60%,var(--ink) 100%);border:1px solid rgba(78,153,96,.2);border-radius:20px;padding:24px;position:relative;overflow:hidden">
+          <div style="position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(78,153,96,.12),transparent 70%);right:-60px;top:-60px;pointer-events:none"></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:600">🎯 Active Profit Goal</div>
+          <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px">₹4,50,000</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px">Season 2026 · 2.5 Acres · Maharashtra</div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:rgba(255,255,255,.5)">Progress</span><span style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--mint)">62% — ₹2,79,000 earned</span></div><div style="height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden"><div style="height:100%;width:62%;background:linear-gradient(90deg,var(--sage),var(--mint));border-radius:4px;box-shadow:0 0 12px rgba(126,200,154,.4)"></div></div></div>
+          <div style="display:flex;gap:24px;margin-top:16px">
+            <div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff">₹1,71,000</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px">Remaining</div></div>
+            <div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold)">127</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px">Days Left</div></div>
+            <div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--mint)">3</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px">Active Crops</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:14px">💹 Profit Per Crop</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--fog);border-radius:12px;border:1px solid var(--border)"><span style="font-size:22px">🌸</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Cotton (BT)</div><div style="height:4px;background:var(--border);border-radius:2px;margin:5px 0;overflow:hidden"><div style="height:100%;width:82%;background:linear-gradient(90deg,var(--sage),var(--mint))"></div></div><div style="font-size:10px;color:var(--muted)">₹82,400 of ₹1,00,000 target</div></div><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--moss)">82%</div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--fog);border-radius:12px;border:1px solid var(--border)"><span style="font-size:22px">🌾</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Wheat (Sharbati)</div><div style="height:4px;background:var(--border);border-radius:2px;margin:5px 0;overflow:hidden"><div style="height:100%;width:64%;background:linear-gradient(90deg,var(--saffron),var(--gold))"></div></div><div style="font-size:10px;color:var(--muted)">₹45,000 of ₹70,000 target</div></div><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--saffron)">64%</div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--fog);border-radius:12px;border:1px solid var(--border)"><span style="font-size:22px">🎋</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--text)">Sugarcane</div><div style="height:4px;background:var(--border);border-radius:2px;margin:5px 0;overflow:hidden"><div style="height:100%;width:18%;background:var(--clay)"></div></div><div style="font-size:10px;color:var(--muted)">₹0 of ₹50,000 — cycle incomplete</div></div><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--clay)">0%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px">How was your profit advisory today?</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Your input helps us optimize your ₹ earnings</div>
+          <div style="display:flex;gap:6px;margin-bottom:14px" id="star-row">
+            <span class="star" onclick="rateStar(1)" style="font-size:30px;cursor:pointer" data-n="1">⭐</span><span class="star" onclick="rateStar(2)" style="font-size:30px;cursor:pointer" data-n="2">⭐</span><span class="star" onclick="rateStar(3)" style="font-size:30px;cursor:pointer" data-n="3">⭐</span><span class="star" onclick="rateStar(4)" style="font-size:30px;cursor:pointer" data-n="4">☆</span><span class="star" onclick="rateStar(5)" style="font-size:30px;cursor:pointer" data-n="5">☆</span>
+          </div>
+          <div class="field"><label>Share Your Thoughts</label><textarea id="feedback-txt" placeholder="How can we help you earn more? Suggest new crop types or market insights..." style="height:80px;resize:none;padding:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;width:100%;font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--text);outline:none;line-height:1.5;display:block"></textarea></div>
+          <div style="padding:10px 12px;background:rgba(78,153,96,.05);border:1px solid rgba(78,153,96,.15);border-radius:10px;font-size:11px;color:var(--sub);line-height:1.5;margin-bottom:14px">🌿 By submitting feedback, you help our AI better understand local market conditions for your current crop cycles.</div>
+          <button class="btn btn-primary" onclick="submitFeedback()">📨 Submit Feedback</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:14px">📊 Season Comparison</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--fog);border-radius:10px;border:1px solid var(--border)"><div><div style="font-size:12px;font-weight:600;color:var(--text)">Kharif 2025</div><div style="font-size:10px;color:var(--muted)">Completed</div></div><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--moss)">₹1,27,400</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--fog);border-radius:10px;border:1px solid var(--border)"><div><div style="font-size:12px;font-weight:600;color:var(--text)">Rabi 2025</div><div style="font-size:10px;color:var(--muted)">Completed</div></div><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--moss)">₹57,800</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(78,153,96,.07);border-radius:10px;border:1.5px solid rgba(78,153,96,.2)"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Kharif 2026 ✦ Current</div><div style="font-size:10px;color:var(--sub)">In progress</div></div><div style="text-align:right"><div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--moss)">₹2,79,000</div><div style="font-size:9px;color:var(--sage)">+119% vs last year 📈</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:12px">🌟 Top Profit Tips This Week</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="alert-box a-ok"><span class="a-icon">💧</span><div><div class="a-title">Irrigate cotton before flowering</div><div class="a-msg">Increases boll weight by 15–20% and boosts final yield</div></div></div>
+            <div class="alert-box a-warn"><span class="a-icon">⚠️</span><div><div class="a-title">Wheat MSP may drop next week</div><div class="a-msg">Price may fall ₹120/q — consider selling within 3 days</div></div></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WEATHER ALERTS ══════════════════════════════════════ -->
+<div class="page" id="page-wxalerts">
+  <div class="page-header">
+    <div class="ph-eyebrow">Market &amp; Weather → Alerts</div>
+    <h1>⚠️ Weather Alerts</h1>
+    <p>Live farm safety alerts — severe weather warnings with action steps</p>
+  </div>
+  <div class="content">
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start">
+      <div>
+        <div class="sec-label" style="margin-bottom:14px">🔴 Active Alerts</div>
+        <div id="active-alerts-list" style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+          <div style="padding:20px;border-radius:16px;background:var(--fog);border:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center">
+            Loading weather alerts... Add weather API key in Profile → Settings for live data.
+          </div>
+        </div>
+        <div class="sec-label" style="margin-bottom:10px">✅ Resolved (Last 7 Days)</div>
+        <div id="resolved-alerts-list" style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:14px;border-radius:12px;background:var(--fog);border:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;opacity:.7">
+            No resolved alerts in the last 7 days.
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;position:sticky;top:20px">
+        <div class="card" style="background:linear-gradient(135deg,var(--forest),var(--ink2));border-color:rgba(78,153,96,.2)">
+          <div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">📍 Your Location</div>
+          <div id="wxalerts-emoji" style="font-size:64px;text-align:center;margin-bottom:6px">⛅</div>
+          <div id="wxalerts-temp" style="font-family:'Playfair Display',serif;font-size:46px;font-weight:700;color:#fff;text-align:center;line-height:1">--°C</div>
+          <div id="wxalerts-desc" style="text-align:center;font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin:6px 0 4px">Loading...</div>
+          <div id="wxalerts-city" style="text-align:center;font-family:'Playfair Display',serif;font-size:14px;color:rgba(255,255,255,.5);margin-bottom:16px">—</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="text-align:center;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 6px"><div id="wxalerts-humidity" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">--%</div><div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Humidity</div></div>
+            <div style="text-align:center;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 6px"><div id="wxalerts-rain" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">--mm</div><div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Rain</div></div>
+            <div style="text-align:center;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 6px"><div id="wxalerts-wind" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff">--</div><div style="font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Wind</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:12px">📅 Best Days This Week</div>
+          <div id="best-days-container" style="display:flex;flex-direction:column;gap:10px">
+            <div style="padding:12px 14px;background:rgba(78,153,96,.08);border:1px solid rgba(78,153,96,.2);border-radius:12px"><div style="font-size:10px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🌿 Best Day to Spray</div><div id="best-spray-day" style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text)">Loading...</div><div id="best-spray-reason" style="font-size:11px;color:var(--muted);margin-top:2px">Fetching weather forecast...</div></div>
+            <div style="padding:12px 14px;background:rgba(74,154,196,.06);border:1px solid rgba(74,154,196,.15);border-radius:12px"><div style="font-size:10px;font-weight:700;color:var(--sky);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💧 Best Day to Irrigate</div><div id="best-irrigate-day" style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text)">Loading...</div><div id="best-irrigate-reason" style="font-size:11px;color:var(--muted);margin-top:2px">Fetching weather forecast...</div></div>
+            <div style="padding:12px 14px;background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.15);border-radius:12px"><div style="font-size:10px;font-weight:700;color:var(--saffron);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🌱 Best Day to Fertilize</div><div id="best-fertilize-day" style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text)">Loading...</div><div id="best-fertilize-reason" style="font-size:11px;color:var(--muted);margin-top:2px">Fetching weather forecast...</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-label" style="margin-bottom:10px">🌾 Crop Risk Summary</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:var(--fog)"><span style="font-size:12px;font-weight:600;color:var(--text)">🌸 Cotton</span><span class="badge b-warn" style="font-size:9px">MODERATE RISK</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:var(--fog)"><span style="font-size:12px;font-weight:600;color:var(--text)">🌾 Wheat</span><span class="badge b-warn" style="font-size:9px">MODERATE RISK</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:var(--fog)"><span style="font-size:12px;font-weight:600;color:var(--text)">🎋 Sugarcane</span><span class="badge b-green" style="font-size:9px">LOW RISK</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main><!-- /main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+// ══ AUTH GUARD ══════════════════════════════════════════════
+(function(){
+  const u = JSON.parse(localStorage.getItem('ka_user') || 'null');
+  if(!u) { window.location.href = 'auth.html'; return; }
+
+  // Populate all dynamic fields from stored user
+  function setText(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+  function setVal(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  const name     = u.name     || 'Farmer';
+  const mobile   = u.mobile   || '';
+  const location = u.location || 'India';
+  const acres    = u.acres    || '2.5';
+  const soil     = u.soil     || 'Black (Regur)';
+  const irr      = u.irrigation || 'Canal-based';
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const firstName= name.split(' ')[0];
+
+  // Sidebar
+  setText('sb-av',   initials);
+  setText('sb-name', name);
+  setText('sb-loc',  location + ' · ' + acres + ' ac');
+
+  // Profile page
+  setText('p-av-initials', initials);
+  setText('p-fullname',    name);
+  setText('p-location',    location);
+  setText('p-farm-name',   firstName + ' Farm');
+  setText('p-farm-loc',    location);
+  setText('p-mobile',      mobile ? '+91 ' + mobile : 'Not set');
+  setText('p-acres',       acres + ' Acres');
+  setText('p-soil',        soil);
+  setText('p-irrigation',  irr);
+
+  // Dashboard greeting
+  const hr = new Date().getHours();
+  const greet = hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
+  const icon  = hr < 12 ? '🌅' : hr < 17 ? '☀️' : '🌙';
+  setText('dash-greet', greet + ', ' + firstName + ' ' + icon);
+
+  // Store for use in other places
+  window.KA_USER = u;
+})();
+
+
+/* ══════════════════════════════════════════════════════════════
+   SMART CROP ADVISOR v2 — Frontend Logic
+══════════════════════════════════════════════════════════════ */
+
+// ── State ──────────────────────────────────────────────────
+let BASE  = localStorage.getItem('base')  || 'http://localhost:8001';
+let WKEY  = localStorage.getItem('wkey')  || '';
+let AKEY  = localStorage.getItem('akey')  || '';
+let LANG  = localStorage.getItem('lang')  || 'en';
+let chatHistory = [];
+let selectedFile = null;
+
+// ── Utilities ──────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const setText = (id, v) => { const e=$(id); if(e) e.textContent=v; };
+const cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : '';
+const fmt = n => {
+  n = +n;
+  if(n >= 100000) return (n/100000).toFixed(1)+'L';
+  if(n >= 1000)   return (n/1000).toFixed(1)+'K';
+  return n.toFixed(0);
+};
+
+function toast(msg, type='ok') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show t-'+type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className='toast', 3200);
+}
+
+function updateRange(el) {
+  el.style.setProperty('--p', ((+el.value - +el.min) / (+el.max - +el.min) * 100) + '%');
+}
+document.querySelectorAll('input[type=range]').forEach(updateRange);
+
+// ── Navigation ─────────────────────────────────────────────
+function nav(id) {
+  if(id==='history') renderHistory();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  $('page-'+id)?.classList.add('active');
+  document.querySelectorAll('.ni').forEach(n => {
+    if(n.getAttribute('onclick')?.includes("'"+id+"'")) n.classList.add('active');
+  });
+  // Lazy load
+  if(id === 'mkt')      renderMarket();
+  if(id === 'lang')     renderLangPage();
+  if(id === 'forecast') renderForecastChips();
+  if(id === 'wx')       loadWeather();
+  if(id === 'dash')     loadDashWeather();
+  if(id === 'profile')  loadProfileConfig();
+}
+
+// ── Language ───────────────────────────────────────────────
+function setGlobalLang(lang) {
+  LANG = lang;
+  localStorage.setItem('lang', lang);
+  $('chat-lang').value = lang;
+  const label = $('global-lang').selectedOptions[0].text.replace(/[🇬🇧🇮🇳]\s*/g,'').split('—')[0].trim();
+  setText('p-lang-val', label);
+  toast('🌐 Language: '+label);
+}
+
+// ── Server health ──────────────────────────────────────────
+async function checkServer() {
+  try {
+    const r = await fetch(BASE+'/api/health', { signal: AbortSignal.timeout(4000) });
+    if(r.ok) {
+      $('s-dot').className='s-dot on'; setText('s-txt','Connected ✓');
+      $('sb-dot').className='f-dot on';
+      toast('✅ Backend online!');
+    } else throw 0;
+  } catch {
+    $('s-dot').className='s-dot off'; setText('s-txt','Offline — start uvicorn');
+    $('sb-dot').className='f-dot';
+    toast('⚠ Backend offline. Run: uvicorn api.main:app --reload', 'err');
+  }
+}
+
+// ── Config ────────────────────────────────────────────────
+function saveConfig() {
+  BASE = $('cfg-url').value.trim();
+  WKEY = $('cfg-wkey').value.trim();
+  AKEY = $('cfg-akey').value.trim();
+  localStorage.setItem('base', BASE);
+  localStorage.setItem('wkey', WKEY);
+  localStorage.setItem('akey', AKEY);
+  setText('s-sub', BASE);
+  toast('✅ Configuration saved!');
+}
+function loadProfileConfig() {
+  $('cfg-url').value  = BASE;
+  $('cfg-wkey').value = WKEY;
+  $('cfg-akey').value = AKEY;
+}
+
+/* ════ CROP ADVISOR ════════════════════════════════════════ */
+const CROP_EMOJI = {rice:'🌾',maize:'🌽',chickpea:'🫘',kidneybeans:'🫘',pigeonpeas:'🌿',mothbeans:'🌱',mungbean:'🫛',blackgram:'🌿',lentil:'🫘',pomegranate:'🍎',banana:'🍌',mango:'🥭',grapes:'🍇',watermelon:'🍉',muskmelon:'🍈',apple:'🍏',orange:'🍊',papaya:'🍑',coconut:'🥥',cotton:'🌸',jute:'🌿',coffee:'☕',tomato:'🍅',onion:'🧅',potato:'🥔',soybean:'🌿',sugarcane:'🎋',groundnut:'🥜'};
+
+async function doCrop() {
+  const btn = $('crop-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Calculating...';
+  const body = {
+    nitrogen: +$('c-n').value, phosphorus: +$('c-p').value, potassium: +$('c-k').value,
+    temperature: +$('c-t').value, humidity: +$('c-h').value,
+    ph: +$('c-ph').value, rainfall: +$('c-rf').value,
+    land_acres: +$('c-ac').value, language: LANG
+  };
+  try {
+    const r = await fetch(BASE+'/api/predict/crop', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+    if(!r.ok) throw new Error(await r.text());
+    renderCropResults(await r.json());
+  } catch(e) {
+    $('crop-results').innerHTML = `<div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px"><div class="e-icon">❌</div><h3>Connection Error</h3><p>Make sure backend is running at ${BASE}</p></div>`;
+    toast('❌ '+e.message, 'err');
+  } finally { btn.disabled=false; btn.innerHTML='✨ Calculate Best Crops'; }
+}
+
+function renderCropResults(data) {
+  const recs = data.top_recommendations;
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700">Top ${recs.length} Crops Recommended</span>
+    <span class="badge b-green">${data.land_acres} ac</span>
+  </div>`;
+  if(data.advice) html += `<div class="alert-box a-ok" style="margin-bottom:16px"><span class="a-icon">💡</span><div><div class="a-msg" style="font-size:13px;color:var(--text)">${data.advice}</div></div></div>`;
+
+  recs.forEach((r, i) => {
+    const em = CROP_EMOJI[r.crop] || '🌾';
+    html += `<div class="result-card ${i===0?'best-pick':''}">
+      ${i===0 ? '<span class="badge b-best" style="margin-bottom:12px;display:inline-flex">⭐ Best Pick for Profit</span>' : ''}
+      <div class="rc-head">
+        <div class="rc-crop">
+          <span class="crop-emoji">${em}</span>
+          <h3>${cap(r.crop)}</h3>
+        </div>
+        <span class="badge b-green">${r.confidence_pct.toFixed(1)}% match</span>
+      </div>
+      <div class="conf-bar"><div class="conf-fill" style="width:${r.confidence_pct}%"></div></div>
+      <div class="stat-grid">
+        <div class="stat"><div class="s-label">Market Price</div><div class="s-val">₹${fmt(r.market_price_per_quintal)}/q</div></div>
+        <div class="stat"><div class="s-label">Yield / Acre</div><div class="s-val">${r.expected_yield_quintal_per_acre} q</div></div>
+        <div class="stat"><div class="s-label">Cost / Acre</div><div class="s-val">₹${fmt(r.cultivation_cost_per_acre)}</div></div>
+        <div class="stat"><div class="s-label">Revenue</div><div class="s-val">₹${fmt(r.estimated_revenue_inr)}</div></div>
+      </div>
+      <div class="profit-highlight">
+        <span class="ph-label">📈 Estimated Profit · ${r.profit_margin_pct.toFixed(1)}% margin</span>
+        <span class="ph-val">₹${fmt(r.estimated_profit_inr)}</span>
+      </div>
+    </div>`;
+  });
+  $('crop-results').innerHTML = html;
+  // Save to recommendation history
+  saveToHistory('crop', recs[0].crop, recs[0].estimated_profit_inr, data.land_acres);
+}
+
+/* ════ FERTILIZER ══════════════════════════════════════════ */
+const DOSAGE = {
+  'Urea': 'Apply 50 kg/acre in 2 splits. First dose at sowing, second at tillering stage. Mix with soil before irrigation.',
+  'DAP': 'Apply 50 kg/acre as basal dose at sowing. Provides both Nitrogen and Phosphorus for early root development.',
+  '28-28': 'Apply 40 kg/acre at sowing as basal. Equal Nitrogen and Phosphorus ratio for balanced early growth.',
+  '14-35-14': 'Apply 50 kg/acre for soils deficient in phosphorus. Best used as basal dose at planting.',
+  '20-20': 'Apply 45 kg/acre as balanced NPK fertilizer. Suitable for most crops in split applications.',
+  '17-17-17': 'Apply 50 kg/acre. Equal macro-nutrient formula. Use for general crop health and balanced nutrition.',
+  '10-26-26': 'Apply 40 kg/acre for soils with Potassium and Phosphorus deficiency. Use as basal dose.'
+};
+
+async function doFert() {
+  const btn = $('fert-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyzing...';
+  const body = {
+    temperature: +$('f-t').value, humidity: +$('f-h').value, moisture: +$('f-m').value,
+    soil_type: $('f-soil').value, crop_type: $('f-crop').value,
+    nitrogen: +$('f-n').value, potassium: +$('f-k').value, phosphorous: +$('f-p').value,
+    language: LANG
+  };
+  try {
+    const r = await fetch(BASE+'/api/predict/fertilizer', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+    if(!r.ok) throw new Error(await r.text());
+    renderFertResults(await r.json());
+  } catch(e) { toast('❌ '+e.message, 'err'); }
+  finally { btn.disabled=false; btn.innerHTML='🧪 Get Fertilizer Advice'; }
+}
+
+function renderFertResults(data) {
+  let html = `<div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:14px">Fertilizer Recommendations</div>`;
+  if(data.advice) html += `<div class="alert-box a-ok" style="margin-bottom:14px"><span class="a-icon">💡</span><div><div class="a-msg" style="font-size:13px;color:var(--text)">${data.advice}</div></div></div>`;
+  data.top_recommendations.forEach((r, i) => {
+    html += `<div class="fert-card ${i===0?'best':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="fert-name">🌱 ${r.fertilizer}</div>
+        <span class="badge b-green">${r.confidence_pct.toFixed(1)}%</span>
+      </div>
+      <div class="dosage-box">${DOSAGE[r.fertilizer] || 'Consult your local agronomist for specific dosage guidance.'}</div>
+    </div>`;
+  });
+  $('fert-results').innerHTML = html;
+}
+
+/* ════ DISEASE DETECTION ═══════════════════════════════════ */
+function pickFile(e) { const f=e.target.files[0]; if(f) setPreview(f); }
+function dropFile(e) { e.preventDefault(); const f=e.dataTransfer.files[0]; if(f&&f.type.startsWith('image/')) setPreview(f); }
+function setPreview(f) {
+  selectedFile = f;
+  const img = $('dis-preview');
+  img.src = URL.createObjectURL(f); img.style.display='block';
+  $('uz-content').style.display='none';
+  $('dis-btn').disabled = false;
+}
+
+async function doDisease() {
+  if(!selectedFile) return;
+  const btn = $('dis-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Scanning...';
+  const fd = new FormData(); fd.append('file', selectedFile);
+  try {
+    const r = await fetch(BASE+'/api/predict/disease', { method:'POST', body:fd });
+    if(!r.ok) throw new Error(await r.text());
+    renderDiseaseResult(await r.json());
+  } catch(e) { toast('❌ '+e.message, 'err'); }
+  finally { btn.disabled=false; btn.innerHTML='🔍 Scan for Disease'; }
+}
+
+function renderDiseaseResult(data) {
+  const top = data.predictions[0];
+  const name = top.disease.replace(/___/g,' → ').replace(/__/g,' → ').replace(/_/g,' ');
+  const healthy = data.is_healthy;
+  let others = '';
+  if(data.predictions.length > 1) {
+    others = `<div class="dr-others"><div class="dr-others-label">Other Possibilities</div>` +
+      data.predictions.slice(1).map(p => {
+        const dn = p.disease.replace(/___/g,' → ').replace(/__/g,' → ').replace(/_/g,' ');
+        return `<div class="dr-other-row"><span>${dn}</span><span>${p.confidence_pct.toFixed(1)}%</span></div>`;
+      }).join('') + '</div>';
+  }
+  $('dis-results').innerHTML = `
+    <div class="disease-result">
+      <div class="dr-status">Detection Result · ${data.image_name||'leaf'}</div>
+      <div class="dr-name">${healthy?'✅':'🟡'} ${name}</div>
+      <div class="dr-conf" style="color:${healthy?'var(--mint)':'var(--gold)'}">${top.confidence_pct.toFixed(1)}% confidence</div>
+      <div class="dr-bar"><div class="dr-fill" style="width:${top.confidence_pct}%"></div></div>
+      <div class="dr-treatment-label">Recommended Treatment</div>
+      <div class="dr-treatment">${top.treatment}</div>
+      ${others}
+    </div>`;
+}
+
+/* ════ MARKET PRICES ════════════════════════════════════════ */
+const MARKET_DATA = [
+  {name:'Rice',      e:'🌾',price:2183,cost:12000,yld:14},
+  {name:'Maize',     e:'🌽',price:1962,cost:8000, yld:15},
+  {name:'Wheat',     e:'🌿',price:2275,cost:9000, yld:16},
+  {name:'Chickpea',  e:'🫘',price:5440,cost:10000,yld:6 },
+  {name:'Mung Bean', e:'🫛',price:7196,cost:8500, yld:5 },
+  {name:'Blackgram', e:'🌿',price:6600,cost:8000, yld:5 },
+  {name:'Lentil',    e:'🫘',price:5500,cost:9000, yld:5 },
+  {name:'Cotton',    e:'🌸',price:6620,cost:15000,yld:8 },
+  {name:'Sugarcane', e:'🎋',price:3150,cost:20000,yld:300},
+  {name:'Soybean',   e:'🌿',price:3900,cost:11000,yld:10},
+  {name:'Groundnut', e:'🥜',price:5500,cost:14000,yld:8 },
+  {name:'Tomato',    e:'🍅',price:1500,cost:18000,yld:80},
+  {name:'Onion',     e:'🧅',price:2000,cost:12000,yld:60},
+  {name:'Potato',    e:'🥔',price:1200,cost:10000,yld:70},
+  {name:'Banana',    e:'🍌',price:1500,cost:30000,yld:120},
+  {name:'Mango',     e:'🥭',price:4000,cost:20000,yld:40},
+  {name:'Coconut',   e:'🥥',price:2500,cost:22000,yld:50},
+  {name:'Coffee',    e:'☕',price:12000,cost:30000,yld:6},
+];
+
+function renderMarket(q='') {
+  const items = q ? MARKET_DATA.filter(c => c.name.toLowerCase().includes(q.toLowerCase())) : MARKET_DATA;
+  $('market-grid').innerHTML = items.map(c => {
+    const profit = (c.yld * c.price) - c.cost;
+    const profitColor = profit > 0 ? 'var(--moss)' : 'var(--clay)';
+    return `<div class="market-card">
+      <div class="mc-top">
+        <span class="mc-icon">${c.e}</span>
+        <span class="mc-name">${c.name}</span>
+      </div>
+      <div class="mc-price">₹${fmt(c.price)}</div>
+      <div class="mc-price-lbl">per quintal · MSP 2024-25</div>
+      <div class="mc-stats">
+        <div class="mc-stat"><div class="mcs-val">${c.yld}q</div><div class="mcs-lbl">Yield/ac</div></div>
+        <div class="mc-stat"><div class="mcs-val">₹${fmt(c.cost)}</div><div class="mcs-lbl">Cost/ac</div></div>
+        <div class="mc-stat"><div class="mcs-val" style="color:${profitColor}">₹${fmt(profit)}</div><div class="mcs-lbl">Profit/ac</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+const filterMarket = q => renderMarket(q);
+
+/* ════ PRICE FORECAST ══════════════════════════════════════ */
+const FORECAST_CROPS = ['rice','maize','wheat','chickpea','mungbean','cotton','tomato','onion','potato','soybean','sugarcane','groundnut'];
+const FC_EMOJI = {rice:'🌾',maize:'🌽',wheat:'🌿',chickpea:'🫘',mungbean:'🫛',cotton:'🌸',tomato:'🍅',onion:'🧅',potato:'🥔',soybean:'🌿',sugarcane:'🎋',groundnut:'🥜'};
+let selectedFCrop = null;
+
+function renderForecastChips() {
+  $('forecast-chips').innerHTML = FORECAST_CROPS.map(c => `
+    <button class="crop-chip${selectedFCrop===c?' selected':''}" onclick="loadForecast('${c}')">
+      ${FC_EMOJI[c]||'🌾'} ${cap(c)}
+    </button>`).join('');
+}
+
+async function loadForecast(crop) {
+  selectedFCrop = crop;
+  // Update chip selection
+  document.querySelectorAll('.crop-chip').forEach(ch => {
+    ch.classList.toggle('selected', ch.textContent.trim().toLowerCase().includes(crop));
+  });
+  $('forecast-result').innerHTML = `<div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px"><div class="e-icon" style="font-size:36px">⏳</div><h3>Loading forecast...</h3></div>`;
+  try {
+    const r = await fetch(`${BASE}/api/market/forecast?crop=${crop}&language=${LANG}`);
+    if(!r.ok) throw new Error(await r.text());
+    renderForecastCard(await r.json(), crop);
+  } catch(e) {
+    $('forecast-result').innerHTML = `<div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px"><div class="e-icon">❌</div><h3>Forecast unavailable</h3><p>${e.message}</p></div>`;
+  }
+}
+
+function renderForecastCard(data, crop) {
+  const prices = data.forecast.map(f => f.price);
+  const maxP = Math.max(...prices), minP = Math.min(...prices);
+  const range = maxP - minP || 1;
+
+  const tclass = data.trend_pct > 5 ? 'trend-up' : data.trend_pct < -5 ? 'trend-down' : 'trend-flat';
+  const tIcon  = data.trend_pct > 5 ? '📈' : data.trend_pct < -5 ? '📉' : '➡️';
+
+  const bars = data.forecast.map((f, i) => {
+    const heightPct = 25 + Math.round(((f.price - minP) / range) * 70);
+    const isBest  = f.price === maxP;
+    const isWorst = f.price === minP;
+    return `<div class="bar-col${isBest?' best-bar':isWorst?' worst-bar':''}">
+      ${isBest ? '<div class="bar-best-lbl">Best</div>' : '<div style="height:14px"></div>'}
+      <div class="bar-fill" style="height:${heightPct}%"></div>
+      <div class="bar-price">₹${fmt(f.price)}</div>
+      <div class="bar-month">${f.month.split(' ')[0]}</div>
+    </div>`;
+  }).join('');
+
+  $('forecast-result').innerHTML = `
+    <div class="forecast-card">
+      <div class="fc-header">
+        <span class="fc-emoji">${FC_EMOJI[crop]||'🌾'}</span>
+        <div><div class="fc-crop-name">${cap(crop)}</div><div class="fc-sub">AI price prediction · 6 months ahead · Prophet model</div></div>
+      </div>
+      <div class="sec-label">Price Trend (per quintal)</div>
+      <div class="forecast-bars">${bars}</div>
+      <div class="trend-banner ${tclass}">${tIcon} ${data.trend_advice}</div>
+      <div class="best-worst-grid">
+        <div class="bw-card bw-best">
+          <div class="bw-label">📅 Best Month to Sell</div>
+          <div class="bw-month">${data.best_month.month}</div>
+          <div class="bw-price">₹${fmt(data.best_month.price)} / quintal</div>
+        </div>
+        <div class="bw-card bw-worst">
+          <div class="bw-label">⚠️ Avoid Selling In</div>
+          <div class="bw-month">${data.worst_month.month}</div>
+          <div class="bw-price">₹${fmt(data.worst_month.price)} / quintal (low)</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ════ WEATHER ═════════════════════════════════════════════ */
+function wIcon(desc='') {
+  const d = desc.toLowerCase();
+  if(d.includes('rain')||d.includes('shower')) return '🌧️';
+  if(d.includes('thunder')||d.includes('storm')) return '⛈️';
+  if(d.includes('cloud')) return '⛅';
+  if(d.includes('clear')||d.includes('sun')) return '☀️';
+  if(d.includes('snow')) return '❄️';
+  if(d.includes('mist')||d.includes('fog')||d.includes('haze')) return '🌫️';
+  if(d.includes('drizzle')) return '🌦️';
+  return '🌤️';
+}
+
+async function loadWeather() {
+  try {
+    const key = WKEY || 'demo';
+    const r = await fetch(`${BASE}/api/weather?lat=12.97&lon=77.59&api_key=${key}`);
+    if(!r.ok) throw new Error('Weather fetch failed');
+    const w = await r.json();
+    setText('wx-temp', w.temperature.toFixed(0)+'°');
+    setText('wx-desc', w.description.toUpperCase());
+    setText('wx-loc',  w.location);
+    setText('wx-hum',  w.humidity+'%');
+    setText('wx-rain', (w.rainfall_mm||0).toFixed(1)+'mm');
+    setText('wx-feel', (w.temperature-2).toFixed(0)+'°');
+    $('wx-icon').textContent = wIcon(w.description);
+    renderWeatherAlerts(w);
+    renderWeatherTips(w);
+    _currentWxData = w;
+    updateWxAlertsLocation(w);
+    if(WKEY) load7Day(); else generateWxAlerts([]);
+  } catch {
+    setText('wx-temp','28°'); setText('wx-desc','PARTLY CLOUDY');
+    setText('wx-loc','Add API key for live weather');
+    setText('wx-hum','72%'); setText('wx-rain','0mm'); setText('wx-feel','26°');
+    $('wx-icon').textContent = '⛅';
+    renderWeatherAlerts({temperature:28,humidity:72,rainfall_mm:0});
+    renderWeatherTips({temperature:28,humidity:72,rainfall_mm:0});
+    updateBestDays([]);
+  }
+}
+
+async function loadDashWeather() {
+  try {
+    const r = await fetch(`${BASE}/api/weather?lat=12.97&lon=77.59&api_key=${WKEY||'demo'}`);
+    if(!r.ok) throw 0;
+    const w = await r.json();
+    $('dw-icon').textContent  = wIcon(w.description);
+    setText('dw-temp', w.temperature.toFixed(0)+'°');
+    setText('dw-desc', w.description);
+    setText('dw-loc',  w.location);
+  } catch {
+    setText('dw-temp','28°'); setText('dw-desc','Add weather key');
+    setText('dw-loc','Profile → Settings'); $('dw-icon').textContent='⛅';
+  }
+}
+
+async function load7Day() {
+  if(!WKEY) return;
+  try {
+    const r = await fetch(`${BASE}/api/weather/forecast?lat=12.97&lon=77.59&api_key=${WKEY}&language=${LANG}`);
+    if(!r.ok) throw 0;
+    const data = await r.json();
+    updateBestDays(data.days);
+    generateWxAlerts(data.days);
+    $('forecast-strip').innerHTML = data.days.map(d => `
+      <div class="day-card dc-${d.level}">
+        <div class="dc-date">${d.date}</div>
+        <div class="dc-icon">${d.emoji}</div>
+        <div class="dc-temps">${d.temp_max}° / ${d.temp_min}°</div>
+        <div class="dc-rain">${d.rain_mm > 0 ? '🌧 '+d.rain_mm+'mm' : ''}</div>
+        <div class="dc-alert">${d.alerts[0]}</div>
+      </div>`).join('');
+    if(data.best_day_to_spray) {
+      $('wx-alerts').innerHTML = `
+        <div class="alert-box a-info" style="margin-bottom:10px">
+          <span class="a-icon">🌿</span>
+          <div>
+            <div class="a-title">Best Day to Spray Pesticide</div>
+            <div class="a-msg">${data.best_day_to_spray} — low wind, low humidity, no rain expected</div>
+          </div>
+        </div>` + $('wx-alerts').innerHTML;
+    }
+  } catch { /* silently fail — already showing alert to add key */ }
+}
+
+
+// ── Weather Alerts Page: Location card + dynamic alerts ─────────────────────
+let _currentWxData = null;
+
+function updateWxAlertsLocation(w) {
+  if (!w) return;
+  const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const EMOJI = {
+    'clear sky': '☀️', 'few clouds': '🌤️', 'scattered clouds': '⛅',
+    'broken clouds': '☁️', 'overcast clouds': '☁️',
+    'light rain': '🌦️', 'moderate rain': '🌧️', 'heavy rain': '⛈️',
+    'thunderstorm': '⛈️', 'drizzle': '🌦️', 'snow': '❄️', 'mist': '🌫️', 'fog': '🌫️',
+  };
+  const desc = (w.description || '').toLowerCase();
+  const emoji = Object.entries(EMOJI).find(([k]) => desc.includes(k))?.[1] || '🌤️';
+  const el = document.getElementById('wxalerts-emoji');
+  if (el) el.textContent = emoji;
+  s('wxalerts-temp',     Math.round(w.temperature || 28) + '°C');
+  s('wxalerts-desc',     (w.description || 'Clear').replace(/\w/g, c => c.toUpperCase()));
+  s('wxalerts-city',     w.location || '—');
+  s('wxalerts-humidity', (w.humidity || '--') + '%');
+  s('wxalerts-rain',     (w.rainfall_mm !== undefined ? w.rainfall_mm : '--') + 'mm');
+  s('wxalerts-wind',     w.wind_speed ? Math.round(w.wind_speed) + 'km/h' : '--');
+}
+
+function generateWxAlerts(days) {
+  if (!days || !days.length) {
+    const al = document.getElementById('active-alerts-list');
+    if (al) al.innerHTML = '<div style="padding:20px;border-radius:16px;background:var(--fog);border:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center">Add weather API key in Profile → Settings for live weather alerts.</div>';
+    return;
+  }
+  const active = [], resolved = [];
+  const now = new Date();
+
+  days.forEach(day => {
+    const rain = day.rain_mm || 0;
+    const tmax = day.temp_max || 30;
+    const hum  = day.humidity_max || 60;
+    const dt   = new Date(day.date);
+    const past = dt < now;
+    const ds   = dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+
+    if (rain > 20) {
+      (past ? resolved : active).push({
+        icon: '⛈️', title: `Heavy Rain — ${ds}`, sev: 'HIGH',
+        bg: 'rgba(196,98,58,.06)', border: 'rgba(196,98,58,.25)', ibg: 'rgba(196,98,58,.15)', badge: 'b-warn', ac: 'var(--clay)',
+        actions: ['Avoid fertilizer/pesticide spraying for 48 hours', 'Clear drainage channels around fields', 'Check bund heights and levee banks']
+      });
+    } else if (tmax > 40) {
+      (past ? resolved : active).push({
+        icon: '🌡️', title: `Heat Wave — ${ds}`, sev: 'MODERATE',
+        bg: 'rgba(232,160,32,.05)', border: 'rgba(232,160,32,.2)', ibg: 'rgba(232,160,32,.12)', badge: 'b-gold', ac: 'var(--saffron)',
+        actions: ['Irrigate early morning (5–7 AM) daily', 'Avoid field work between 11 AM – 3 PM', 'Apply mulch to retain soil moisture']
+      });
+    } else if (hum > 85) {
+      (past ? resolved : active).push({
+        icon: '🍄', title: `Fungal Disease Risk — ${ds}`, sev: 'INFO',
+        bg: 'rgba(74,154,196,.05)', border: 'rgba(74,154,196,.15)', ibg: 'rgba(74,154,196,.12)', badge: 'b-blue', ac: 'var(--sky)',
+        actions: ['Scout fields 2 days after rainfall stops', 'Prepare mancozeb / copper fungicide spray', 'Apply on first dry morning after rain clears']
+      });
+    }
+  });
+
+  const makeActive = a => `
+    <div style="background:${a.bg};border:1.5px solid ${a.border};border-radius:16px;padding:20px;display:flex;gap:16px">
+      <div style="width:48px;height:48px;border-radius:14px;background:${a.ibg};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">${a.icon}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text)">${a.title}</span>
+          <span class="badge ${a.badge}" style="font-size:9px">${a.sev}</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:6px">⚡ Immediate Actions:</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          ${a.actions.map(x => `<div style="font-size:12px;color:var(--sub);display:flex;gap:6px"><span style="color:${a.ac};flex-shrink:0">▸</span>${x}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  const makeResolved = a => `
+    <div style="background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;opacity:.6">
+      <span style="font-size:20px">${a.icon}</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${a.title} — Resolved</div></div>
+      <span class="badge b-green" style="font-size:9px">✓ Resolved</span>
+    </div>`;
+
+  const al = document.getElementById('active-alerts-list');
+  if (al) al.innerHTML = active.length
+    ? active.map(makeActive).join('')
+    : '<div style="padding:20px;border-radius:16px;background:rgba(78,153,96,.06);border:1.5px solid rgba(78,153,96,.2);color:var(--moss);font-size:13px;text-align:center">✅ No active weather alerts for your area</div>';
+
+  const rl = document.getElementById('resolved-alerts-list');
+  if (rl) rl.innerHTML = resolved.length
+    ? resolved.map(makeResolved).join('')
+    : '<div style="padding:14px;border-radius:12px;background:var(--fog);color:var(--muted);font-size:12px;text-align:center;opacity:.7">No resolved alerts in the last 7 days.</div>';
+}
+
+function updateBestDays(days) {
+  if(!days || days.length === 0) {
+    // No real weather data — show generic fallback with real day names
+    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const today = new Date();
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+    const dayAfter = new Date(today); dayAfter.setDate(today.getDate()+2);
+    const tomorrowName = dayNames[tomorrow.getDay()];
+    const dayAfterName = dayNames[dayAfter.getDay()];
+    setText('best-spray-day', tomorrowName);
+    setText('best-spray-reason', "Add weather API key for precise forecast");
+    setText('best-irrigate-day', tomorrowName);
+    setText('best-irrigate-reason', "Add weather API key for precise forecast");
+    setText('best-fertilize-day', dayAfterName);
+    setText('best-fertilize-reason', "Add weather API key for precise forecast");
+    return;
+  }
+
+  // Use real forecast data
+  const fmt = d => {
+    if(!d || !d.date) return '—';
+    const date = new Date(d.date);
+    const names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${names[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+  };
+
+  // Best spray day: no rain (< 2mm), humidity < 70%, temp 15-35°C
+  let sprayDay = days.find(d =>
+    (d.rain_mm || 0) < 2 &&
+    (d.humidity_max || 70) < 75 &&
+    (d.temp_max || 30) < 38 &&
+    (d.temp_min || 15) > 10
+  ) || days[0];
+
+  // Best irrigate day: highest temp, lowest rain (plant needs water most)
+  let irrigateDay = days.slice().sort((a,b) =>
+    ((b.temp_max||30) - (a.rain_mm||0)*5) - ((a.temp_max||30) - (b.rain_mm||0)*5)
+  )[0] || days[0];
+
+  // Best fertilize day: day AFTER rain (soil moist but not flooded)
+  let fertilizeDay = null;
+  for(let i = 1; i < days.length; i++) {
+    if((days[i-1].rain_mm || 0) > 2 && (days[i].rain_mm || 0) < 2) {
+      fertilizeDay = days[i];
+      break;
+    }
+  }
+  if(!fertilizeDay) {
+    fertilizeDay = days.find(d => (d.rain_mm||0) < 5 && (d.temp_max||30) < 36) || days[1] || days[0];
+  }
+
+  if($('best-spray-day')) {
+    setText('best-spray-day', fmt(sprayDay));
+    setText('best-spray-reason', `Rain: ${sprayDay.rain_mm||0}mm · Humidity: ${sprayDay.humidity_max||65}% · ${sprayDay.emoji||'🌤'} ${sprayDay.description||'Clear'}`);
+  }
+  if($('best-irrigate-day')) {
+    setText('best-irrigate-day', fmt(irrigateDay));
+    setText('best-irrigate-reason', `Temp: ${irrigateDay.temp_max||30}°C · Rain: ${irrigateDay.rain_mm||0}mm · ${irrigateDay.emoji||'☀️'} High evaporation`);
+  }
+  if($('best-fertilize-day')) {
+    setText('best-fertilize-day', fmt(fertilizeDay));
+    setText('best-fertilize-reason', `Rain: ${fertilizeDay.rain_mm||0}mm · Moist soil · ${fertilizeDay.emoji||'🌱'} Good absorption`);
+  }
+}
+
+function renderWeatherAlerts(w) {
+  const alerts = [];
+  if(w.rainfall_mm > 20) alerts.push({t:'danger',i:'⛈️',h:'Heavy Rain Warning',m:'Avoid spraying. Check field drainage.'});
+  if(w.temperature > 38) alerts.push({t:'danger',i:'🌡️',h:'Extreme Heat Alert',m:'Water crops early morning. Shade seedlings.'});
+  if(w.temperature < 10) alerts.push({t:'warn',i:'❄️',h:'Cold Night Warning',m:'Cover young plants. Risk of frost damage.'});
+  if(w.humidity > 85)    alerts.push({t:'warn',i:'🍄',h:'High Humidity',m:'Monitor for fungal diseases on leaves.'});
+  if(w.rainfall_mm < 1 && w.temperature > 30) alerts.push({t:'warn',i:'💧',h:'Hot & Dry Conditions',m:'Irrigate today. Risk of water stress.'});
+  if(!alerts.length)     alerts.push({t:'ok',i:'✅',h:'Good Farming Conditions',m:'All clear — great day for field work.'});
+  $('wx-alerts').innerHTML = alerts.map(a => `
+    <div class="alert-box a-${a.t}">
+      <span class="a-icon">${a.i}</span>
+      <div><div class="a-title">${a.h}</div><div class="a-msg">${a.m}</div></div>
+    </div>`).join('');
+}
+
+function renderWeatherTips(w) {
+  const tips = [];
+  if(w.humidity > 70)    tips.push({i:'🍃',t:'High humidity detected — inspect leaves for early signs of blight, powdery mildew, or rust.'});
+  if(w.temperature > 32) tips.push({i:'💧',t:'Hot day — irrigate before 8 AM to reduce evaporation by up to 40%.'});
+  if(w.temperature < 15) tips.push({i:'🌾',t:'Cool weather is ideal for wheat, mustard, and gram — good growth conditions.'});
+  if(w.rainfall_mm > 5)  tips.push({i:'🚫',t:'Rain expected — hold pesticide/fertilizer applications. Wait 24hrs after rain.'});
+  tips.push({i:'⏰',t:'Best time to apply fertilizer is early morning (6-8 AM) when winds are calm and dew is present.'});
+  tips.push({i:'🔍',t:'Regular scouting: walk your field every 3-4 days, check 10 plants per 0.1 acre for pests.'});
+  $('wx-tips').innerHTML = tips.map(t => `
+    <div class="alert-box a-ok" style="margin-bottom:8px">
+      <span class="a-icon">${t.i}</span>
+      <div><div class="a-msg" style="font-size:12px;color:var(--text)">${t.t}</div></div>
+    </div>`).join('');
+}
+
+/* ════ RECOMMENDATION HISTORY ═════════════════════════════ */
+let recHistory = JSON.parse(localStorage.getItem('recHistory') || '[]');
+
+function saveToHistory(type, cropName, profit, acres) {
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const entry = {
+    id: Date.now(),
+    type,
+    crop: cropName,
+    profit,
+    acres,
+    date: `${months[now.getMonth()]} ${now.getDate()}`,
+    month: `${months[now.getMonth()]} ${now.getFullYear()}`,
+    num: Math.floor(800 + recHistory.length + Math.random()*10),
+  };
+  recHistory.unshift(entry);
+  if(recHistory.length > 50) recHistory.pop();
+  localStorage.setItem('recHistory', JSON.stringify(recHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = $('history-list');
+  if(!list) return;
+  if(recHistory.length === 0) {
+    list.innerHTML = `<div class="empty-state" style="border:1.5px dashed var(--border);border-radius:16px;padding:40px;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">📋</div>
+      <h3 style="color:var(--text)">No History Yet</h3>
+      <p style="color:var(--muted)">Use Crop Advisor or Fertilizer Advisor to get recommendations. They'll appear here.</p>
+    </div>`;
+    setText('hist-count', 'No records yet');
+    return;
+  }
+  // Group by month
+  const byMonth = {};
+  recHistory.forEach(e => {
+    if(!byMonth[e.month]) byMonth[e.month] = [];
+    byMonth[e.month].push(e);
+  });
+  const EMOJI = {rice:'🌾',wheat:'🌾',maize:'🌽',cotton:'🌸',sugarcane:'🎋',tomato:'🍅',onion:'🧅',potato:'🥔',default:'🌱'};
+  let out = '';
+  Object.entries(byMonth).forEach(([month, entries]) => {
+    out += `<div class="hist-grp" data-grp="all latest" style="margin-bottom:22px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <div style="flex:1;height:1px;background:var(--border)"></div>${month}<div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">`;
+    entries.forEach((e, i) => {
+      const em = EMOJI[e.crop] || EMOJI.default;
+      const profitColor = e.profit > 0 ? 'var(--moss)' : 'var(--muted)';
+      const profitLabel = e.profit > 0 ? '✓ Profit Estimate' : '⏳ Pending';
+      out += `<div class="hist-row" data-tags="all latest profit" style="background:var(--paper);border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s" onmouseenter="this.style.borderColor='var(--sage)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="toast('📋 ${cap(e.crop)} — ₹${fmt(e.profit)} estimated · ${e.date}')">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(78,153,96,.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${em}</div>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:3px">${e.date} · Recommendation #${e.num}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--text)">${cap(e.crop)}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${e.acres} acres · ${e.type === 'crop' ? 'Crop Advisory' : 'Fertilizer'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${profitColor}">₹${fmt(e.profit)}</div>
+          <div style="font-size:9px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">${profitLabel}</div>
+          ${i===0?'<span class="badge b-best" style="margin-top:5px;display:inline-block;font-size:9px;padding:2px 8px">⭐ Latest</span>':''}
+        </div>
+      </div>`;
+    });
+    out += `</div></div>`;
+  });
+  list.innerHTML = out;
+  setText('hist-count', `Showing ${recHistory.length} record${recHistory.length!==1?'s':''}`);
+}
+
+function filterHistory(f) {
+  renderHistory(); // simplified — just re-render all for now
+}
+
+/* ════ AI CHATBOT ══════════════════════════════════════════ */
+function askQuick(q) { $('chat-in').value=q; sendMsg(); }
+
+async function sendMsg() {
+  const inp = $('chat-in');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+
+  const box = $('chat-msgs');
+  box.innerHTML += `<div class="msg msg-user">${msg}</div>`;
+  box.innerHTML += `<div class="msg msg-typing" id="typing-ind"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  box.scrollTop = box.scrollHeight;
+
+  chatHistory.push({role:'user', content:msg});
+
+  try {
+    const r = await fetch(BASE+'/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        message: msg,
+        history: chatHistory.slice(-10),
+        language: LANG,
+        api_key: AKEY,
+        context: { location:'Maharashtra', acres:2.5, season:'Kharif 2026' }
+      })
+    });
+    const d = await r.json();
+    const reply = d.response || 'Sorry, no response.';
+    chatHistory.push({role:'assistant', content:reply});
+    document.getElementById('typing-ind')?.remove();
+    box.innerHTML += `<div class="msg msg-bot">${reply.replace(/\n/g,'<br>')}</div>`;
+  } catch {
+    document.getElementById('typing-ind')?.remove();
+    const fallback = offlineFallback(msg);
+    chatHistory.push({role:'assistant', content:fallback});
+    box.innerHTML += `<div class="msg msg-bot">${fallback}</div>`;
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+function offlineFallback(msg) {
+  const m = msg.toLowerCase();
+  if(m.includes('water')||m.includes('irrigat')||m.includes('पानी'))
+    return '💧 <strong>Irrigation advice:</strong> Water early morning (6–8 AM) to cut evaporation by 40%. Irrigate when top 2 inches of soil are dry. Drip irrigation saves 50% water vs flood.';
+  if(m.includes('fertilizer')||m.includes('खाद')||m.includes('ఎరువు'))
+    return '🌱 <strong>Fertilizer tip:</strong> Apply DAP (50 kg/acre) at sowing for phosphorus. Add Urea in 2 splits — sowing + 30 days later. Always apply after irrigation when soil is moist.';
+  if(m.includes('yellow')||m.includes('disease')||m.includes('pest'))
+    return '🍃 <strong>Disease alert:</strong> Remove infected leaves immediately. Spray copper-based fungicide (Bordeaux mixture) for fungal diseases. For insects, use neem oil (5ml/liter). Consult your local agriculture officer if widespread.';
+  if(m.includes('price')||m.includes('sell')||m.includes('msp'))
+    return '📊 <strong>2024-25 MSP rates:</strong> Rice ₹2183/q · Wheat ₹2275/q · Cotton ₹6620/q · Maize ₹1962/q · Groundnut ₹5550/q. Prices usually rise 8–12% post-harvest. Use Price Forecast page for 6-month prediction!';
+  if(m.includes('rain')||m.includes('weather'))
+    return '🌧️ <strong>Rain advisory:</strong> Avoid pesticide spraying 24 hrs before/after rain. Ensure proper drainage to prevent waterlogging. Check 7-day forecast in the Weather section.';
+  if(m.includes('pm-kisan')||m.includes('scheme')||m.includes('yojana'))
+    return '🏛️ <strong>PM-KISAN:</strong> ₹6,000/year direct to farmer bank account in 3 installments of ₹2,000. Register at pmkisan.gov.in. Also explore Pradhan Mantri Fasal Bima Yojana for crop insurance at subsidized premium.';
+  if(m.includes('मेरी')||m.includes('क्या')||m.includes('कैसे')||m.includes('कब'))
+    return '🙏 <strong>नमस्ते!</strong> मैं आपकी मदद करूंगा। Backend से जुड़ने पर पूरा हिंदी में जवाब मिलेगा। Profile में Gemini API key जोड़ें।';
+  if(m.includes('నా')||m.includes('పంట')||m.includes('ఎలా'))
+    return '🙏 <strong>నమస్కారం!</strong> నేను మీకు సహాయపడతాను. Backend కనెక్ట్ అయినప్పుడు తెలుగులో పూర్తి సమాధానం వస్తుంది.';
+  return '🤖 <strong>Kisan AI</strong> is ready! I can help with crops, fertilizers, diseases, weather, market prices, and government schemes.<br><br>💡 <em>Tip: Start the backend server and add API keys in Profile for full AI responses in your language!</em>';
+}
+
+/* ════ STARTUP ══════════════════════════════════════════════ */
+(function init() {
+  // Restore from storage
+  $('cfg-url')?.setAttribute('value', BASE);
+  $('global-lang').value = LANG;
+  $('chat-lang').value = LANG;
+  setText('s-sub', BASE);
+
+  // Greeting
+  const h = new Date().getHours();
+  const greet = h < 5 ? 'Good Night' : h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
+  const icons = {5:'🌙',12:'🌅',17:'☀️',24:'🌙'};
+  const icon = h < 5 ? '🌙' : h < 12 ? '🌅' : h < 17 ? '☀️' : '🌆';
+  setText('dash-greet', `${greet}, Rajesh ${icon}`);
+
+  // Init
+  checkServer();
+  loadDashWeather();
+  renderMarket();
+})();
+
+// ══════════ NEW PAGE JS ══════════════════════════════════
+
+function doCreateAccount() {
+  const name  = document.getElementById('ac-name').value.trim();
+  const phone = document.getElementById('ac-phone').value.trim();
+  const terms = document.getElementById('ac-terms').checked;
+  if(!name||!phone){toast('⚠ Fill in name and mobile','err');return;}
+  if(!terms){toast('⚠ Please accept the terms','err');return;}
+  const btn=document.getElementById('ac-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin" style="border-top-color:#fff;border-color:rgba(255,255,255,.2)"></span>  Creating...';
+  setTimeout(()=>{
+    btn.disabled=false;btn.innerHTML='🚀 Create Account';
+    toast('✅ Account created! Welcome, '+name+'!');
+    const fn=document.querySelector('.f-name');if(fn)fn.textContent=name;
+    nav('farmdetails');
+  },1800);
+}
+
+function addCrop(){
+  const inp=document.getElementById('fd-new-crop');
+  const val=inp.value.trim();if(!val)return;
+  const row=document.createElement('div');
+  row.className='fd-crop-row';
+  row.style.cssText='display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--fog);border-radius:10px;border:1px solid var(--border)';
+  row.innerHTML='<span style="font-size:20px">🌾</span><span style="font-size:13px;font-weight:600;color:var(--text);flex:1">'+val+'</span><span style="cursor:pointer;color:var(--clay);font-size:14px;padding:2px 6px" onclick="this.closest(\'.fd-crop-row\').remove()">✕</span>';
+  document.getElementById('fd-crops-list').appendChild(row);
+  inp.value='';toast('🌱 Added: '+val);
+}
+
+function detectLocation(){
+  if(navigator.geolocation){
+    toast('📍 Detecting location...');
+    navigator.geolocation.getCurrentPosition(p=>{
+      document.getElementById('fd-lat').value=p.coords.latitude.toFixed(4);
+      document.getElementById('fd-lon').value=p.coords.longitude.toFixed(4);
+      toast('✅ Location detected!');
+    },()=>toast('❌ Location access denied','err'));
+  }else{toast('❌ Geolocation not supported','err');}
+}
+
+function toggleSwitch(el){
+  const thumb=el.querySelector('div');
+  if(el.classList.contains('on')){
+    el.classList.remove('on');el.style.background='rgba(122,146,128,.25)';
+    thumb.style.right='auto';thumb.style.left='3px';
+  }else{
+    el.classList.add('on');el.style.background='var(--sage)';
+    thumb.style.left='auto';thumb.style.right='3px';
+  }
+}
+
+function saveFarmDetails(){
+  const acres=document.getElementById('fd-acres').value;
+  const soil=document.getElementById('fd-soil').value;
+  const irr=document.getElementById('fd-irr').value;
+  if(!soil||!irr){toast('⚠ Select soil type and irrigation','err');return;}
+  toast('✅ Farm saved — '+acres+' acres · '+soil);
+  setTimeout(()=>nav('dash'),1200);
+}
+
+const LANG_LIST=[
+  {code:'en',native:'English',flag:'🇬🇧'},
+  {code:'hi',native:'हिंदी',flag:'🇮🇳'},
+  {code:'te',native:'తెలుగు',flag:'🇮🇳'},
+  {code:'ta',native:'தமிழ்',flag:'🇮🇳'},
+  {code:'kn',native:'ಕನ್ನಡ',flag:'🇮🇳'},
+  {code:'mr',native:'मराठी',flag:'🇮🇳'},
+  {code:'bn',native:'বাংলা',flag:'🇮🇳'},
+  {code:'gu',native:'ગુજરાતી',flag:'🇮🇳'},
+  {code:'pa',native:'ਪੰਜਾਬੀ',flag:'🇮🇳'},
+];
+const PHRASES=[
+  {en:'What is the best crop for black soil?',hi:'काली मिट्टी के लिए सबसे अच्छी फसल कौनसी है?',te:'నల్ల మట్టికి అత్యుత్తమ పంట ఏది?'},
+  {en:'How much fertilizer per acre?',hi:'प्रति एकड़ कितना उर्वरक डालें?',te:'ఎకరానికి ఎంత ఎరువు వేయాలి?'},
+  {en:'When should I water my crops?',hi:'फसल को कब सींचना चाहिए?',te:'పంటలకు ఎప్పుడు నీరు పెట్టాలి?'},
+  {en:'What is the MSP for wheat 2026?',hi:'गेहूं का MSP 2026 में क्या है?',te:'2026లో గోధుమ MSP ఎంత?'},
+];
+
+function renderLangPage(){
+  const grid=document.getElementById('lang-grid');if(!grid)return;
+  grid.innerHTML=LANG_LIST.map(l=>`
+    <div onclick="selectLang('${l.code}')" style="padding:16px 10px;background:${LANG===l.code?'rgba(78,153,96,.1)':'var(--paper)'};border:${LANG===l.code?'1.5px solid var(--sage)':'1.5px solid var(--border)'};border-radius:14px;cursor:pointer;text-align:center;transition:all .18s" onmouseover="this.style.borderColor='var(--sage)'" onmouseleave="this.style.borderColor='${LANG===l.code?'var(--sage)':'var(--border)'}'">
+      <div style="font-size:26px;margin-bottom:8px">${l.flag}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--text)">${l.native}</div>
+      ${LANG===l.code?'<div style="font-size:9px;color:var(--sage);font-weight:700;margin-top:5px">✓ ACTIVE</div>':''}
+    </div>`).join('');
+  const pl=document.getElementById('phrases-list');if(!pl)return;
+  pl.innerHTML=PHRASES.map(p=>`
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:5px">🇬🇧 ${p.en}</div>
+      <div style="font-size:13px;color:var(--moss);font-weight:500">🇮🇳 ${LANG==='te'?p.te:p.hi}</div>
+    </div>`).join('');
+}
+
+function selectLang(code){
+  LANG=code;localStorage.setItem('lang',code);
+  document.getElementById('global-lang').value=code;
+  document.getElementById('chat-lang').value=code;
+  renderLangPage();
+  toast('🌐 Language: '+LANG_LIST.find(l=>l.code===code)?.native);
+}
+
+async function doTranslate(){
+  const txt=document.getElementById('trans-input').value.trim();
+  const lang=document.getElementById('trans-lang').value;
+  const out=document.getElementById('trans-output');
+  if(!txt){toast('⚠ Enter text to translate','err');return;}
+  out.style.display='block';out.textContent='Translating...';out.style.color='var(--muted)';
+  try{
+    const r=await fetch(BASE+'/api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:txt,target:lang})});
+    const d=await r.json();
+    out.textContent=d.translated||d.text||txt;out.style.color='var(--moss)';
+  }catch{
+    const demos={hi:'काली मिट्टी के लिए सबसे अच्छी फसल कपास, ज्वार और सोयाबीन है।',te:'నల్ల మట్టికి పత్తి, జొన్న మరియు సోయాబీన్ అత్యుత్తమ పంటలు.',ta:'கரும் மண்ணிற்கு பஞ்சு, ஜோவர் சிறந்த பயிர்கள்.',kn:'ಕಪ್ಪು ಮಣ್ಣಿಗೆ ಹತ್ತಿ, ಜೋಳ ಅತ್ಯುತ್ತಮ ಬೆಳೆಗಳು.',mr:'काळ्या मातीसाठी कापूस, ज्वारी सर्वोत्तम पिके.',bn:'কালো মাটির জন্য তুলা সেরা ফসল।',gu:'કાળી જમીન માટે કપાસ શ્રેષ્ઠ.',pa:'ਕਾਲੀ ਮਿੱਟੀ ਲਈ ਕਪਾਹ ਸਭ ਤੋਂ ਵਧੀਆ।'};
+    out.textContent=demos[lang]||txt;out.style.color='var(--moss)';
+  }
+}
+
+let voiceOn=false;
+function toggleVoice(){
+  const btn=document.getElementById('mic-btn'),st=document.getElementById('mic-status');
+  if(!voiceOn){
+    voiceOn=true;
+    btn.style.cssText=btn.style.cssText+'box-shadow:0 0 0 14px rgba(78,153,96,.15),0 4px 20px rgba(78,153,96,.3);transform:scale(1.08)';
+    st.textContent='Listening... speak now';st.style.color='var(--sage)';
+    setTimeout(()=>{voiceOn=false;btn.style.boxShadow='';btn.style.transform='';st.textContent='Tap to Speak';st.style.color='';toast('🎙️ Heard: "What is best crop for black soil?"');},3000);
+  }
+}
+
+function filterHistory(f){
+  ['all','profit','latest','arch'].forEach(x=>{
+    const b=document.getElementById('filt-'+x);
+    if(b)b.style.background=x===f?'var(--fog)':'';
+  });
+  document.querySelectorAll('.hist-grp').forEach(g=>{
+    const grp=g.getAttribute('data-grp')||'all';
+    g.style.display=(f==='all'||grp.includes(f))?'':'none';
+  });
+  const cnt=document.querySelectorAll('.hist-row').length;
+  const el=document.getElementById('hist-count');if(el)el.textContent='Showing '+cnt+' records';
+}
+
+let starRating=4;
+function rateStar(n){
+  starRating=n;
+  document.querySelectorAll('.star').forEach((s,i)=>{s.textContent=i<n?'⭐':'☆';});
+  toast('⭐ Rated '+n+'/5 — thank you!');
+}
+
+function submitFeedback(){
+  const txt=document.getElementById('feedback-txt');
+  toast('📨 Feedback submitted! Rating: '+starRating+'/5');
+  if(txt)txt.value='';
+}
+
+</script>
+</body>
+</html>
