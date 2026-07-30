@@ -1,292 +1,271 @@
-# 🌿 Kisan AI — Smart Crop Advisor v2
+# 🌾 Kisan AI Pro — Intelligent Smart Crop Advisor Platform
 
 <p align="center">
 
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-DeepLearning-orange)
-![Machine Learning](https://img.shields.io/badge/MachineLearning-RandomForest-yellow)
-![PWA](https://img.shields.io/badge/PWA-MobileApp-purple)
-![Status](https://img.shields.io/badge/Status-Active-success)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-FF6F00?logo=tensorflow)
+![Random Forest](https://img.shields.io/badge/Machine%20Learning-RandomForest-success)
+![Prophet](https://img.shields.io/badge/Forecasting-Prophet-blueviolet)
+![PWA](https://img.shields.io/badge/PWA-Installable-purple)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Live-success)
 
 </p>
 
-**AI-powered, profit-first farming advisory system designed to help Indian farmers make data-driven agricultural decisions using machine learning, weather insights, and market forecasting.**
+<p align="center">
+
+### 🌐 Live Application
+
+👉 **https://smart-crop-advisor-alpha.vercel.app/auth.html**
+
+</p>
 
 ---
 
-# 🚀 Project Highlights
+## 🚀 Overview
 
-✔ AI-powered crop recommendation system  
-✔ Fertilizer recommendation using ML  
-✔ Plant disease detection using deep learning  
-✔ 6-month crop market price prediction  
-✔ AI chatbot for farming guidance  
-✔ Weather forecast with farming alerts  
-✔ Multilingual support (9 Indian languages)  
-✔ Progressive Web App (installable mobile app)
+**Kisan AI Pro** is an enterprise-grade AI-powered agricultural decision support platform that combines Machine Learning, Deep Learning, Time-Series Forecasting, Weather Intelligence, and AI-powered conversations to help farmers make profitable and data-driven farming decisions.
+
+The platform integrates multiple AI models into a unified Progressive Web Application (PWA), enabling crop recommendation, fertilizer optimisation, disease detection, market forecasting, multilingual assistance, and weather-based advisories.
 
 ---
 
-# ✨ What's New in v2
+# 🎯 Core Features
 
-| Feature | v1 | v2 |
-|---|---|---|
-| Crop Recommendation | ✅ | ✅ |
-| Fertilizer Advisor | ✅ | ✅ |
-| Disease Detection | ✅ | ✅ |
-| Market Prices (static) | ✅ | ✅ |
-| **6-Month Price Forecast** | ❌ | ✅ Prophet AI |
-| **AI Chatbot (Kisan AI)** | ❌ | ✅ Claude / rule-based |
-| **Multilingual (9 langs)** | ❌ | ✅ Hindi, Telugu, Tamil… |
-| **7-Day Weather Forecast** | ⚠️ Current only | ✅ Daily farm alerts |
-| **PWA Mobile Install** | ❌ | ✅ Works offline |
+✅ AI Crop Recommendation Engine
 
----
+✅ Smart Fertilizer Advisor
 
-# 🧠 AI Models
+✅ Deep Learning Disease Detection
 
-| Model | Algorithm | Accuracy | Dataset |
-|---|---|---|---|
-| Crop Recommendation | Random Forest | **99.3%** | 2200 rows, 22 crops |
-| Fertilizer Recommendation | Random Forest | **100%** | 99 rows, 7 fertilizers |
-| Disease Detection | MobileNetV2 | **~95%** | PlantVillage (16 classes) |
-| Market Forecast | Prophet (Meta) | Time Series | 4 years monthly data |
+✅ 6-Month Crop Price Forecasting
+
+✅ AI Farming Assistant
+
+✅ Live Weather Intelligence
+
+✅ Profit Analysis Dashboard
+
+✅ Multilingual Support
+
+✅ Progressive Web App
+
+✅ Offline Mode
 
 ---
 
-# 🚀 Quick Start
+# 🌐 Live Demo
 
-### 1️⃣ Install dependencies
+Frontend
 
-```bash
-pip install -r requirements.txt
-```
+https://smart-crop-advisor-alpha.vercel.app/auth.html
 
-### 2️⃣ Train models (first time only)
+Backend
 
-```bash
-# Train crop & fertilizer models
-python notebooks/train_models.py
+https://YOUR_RENDER_BACKEND.onrender.com
 
-# Train market price prediction
-python notebooks/train_market_predictor.py
-```
+API Documentation
 
-### 3️⃣ Start API server
+https://YOUR_RENDER_BACKEND.onrender.com/docs
 
-```bash
-cd api
-uvicorn main:app --reload --port 8001
-```
+Health Check
 
-Open in browser:
-
-```
-http://localhost:8001
-```
-
-### 4️⃣ Open the App
-
-Open
-
-```
-frontend/index.html
-```
-
-or access through the backend.
+https://YOUR_RENDER_BACKEND.onrender.com/health
 
 ---
 
-# 📁 Project Structure
+# 🏗 System Architecture
 
-```
-smart-crop-advisor-v2
-│
-├── api
-│   ├── main.py
-│   ├── chatbot.py
-│   ├── translator.py
-│   ├── market_predictor.py
-│   └── weather_forecast.py
-│
-├── models
-│   ├── crop_model.pkl
-│   ├── fertilizer_model.pkl
-│   ├── disease_model.h5
-│   ├── market_prophet_models.pkl
-│   └── market_forecasts_cache.json
-│
-├── data
-│   └── market_prices_historical.csv
-│
-├── notebooks
-│   ├── train_models.py
-│   └── train_market_predictor.py
-│
-├── frontend
-│   ├── index.html
-│   └── manifest.json
-│
-├── requirements.txt
-├── render.yaml
-└── README.md
-```
+Frontend (HTML + CSS + JavaScript)
+
+↓
+
+FastAPI REST API
+
+↓
+
+Machine Learning Models
+
+↓
+
+Weather API + AI Chatbot + Market Forecast Engine
+
+↓
+
+Prediction Response
 
 ---
 
-# 🌐 API Endpoints
+# 🧠 Artificial Intelligence Modules
 
-```
-GET  /health                 → server status
-GET  /languages              → supported languages list
-POST /predict/crop           → crop recommendation + profit
-POST /predict/fertilizer     → fertilizer recommendation
-POST /predict/disease        → leaf disease detection
-GET  /market/price           → current MSP price
-GET  /market/forecast        → 6-month AI price forecast
-GET  /weather                → current weather
-GET  /weather/forecast       → 7-day forecast + alerts
-POST /chat                   → AI chatbot (Kisan AI)
-POST /translate              → translate any text
-```
+| Module | Algorithm | Performance |
+|----------|------------|------------|
+| Crop Recommendation | Random Forest | 99.3% Accuracy |
+| Fertilizer Recommendation | Random Forest | 100% Accuracy |
+| Disease Detection | MobileNetV2 CNN | ~95% Accuracy |
+| Market Forecasting | Prophet | 6-Month Prediction |
+| AI Assistant | Claude / Rule-Based | Conversational AI |
+| Translation | Google Translator | 9 Languages |
 
 ---
 
-# 🌍 Supported Languages
+# ⚙ Technology Stack
 
-English · हिंदी · తెలుగు · தமிழ் · ಕನ್ನಡ · मराठी · বাংলা · ગુજરાતી · ਪੰਜਾਬੀ
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+- Progressive Web App
+
+### Backend
+
+- FastAPI
+- Python
+- Uvicorn
+
+### Artificial Intelligence
+
+- TensorFlow
+- Scikit-Learn
+- Prophet
+- NumPy
+- Pandas
+
+### APIs
+
+- OpenWeatherMap
+- Anthropic Claude
+
+### Deployment
+
+Frontend → Vercel
+
+Backend → Render
+
+Version Control → GitHub
 
 ---
 
-# ☁️ Deployment
+# 📊 Model Performance
 
-## GitHub Pages (Frontend)
-
-Push to GitHub → **Settings → Pages → Source → `/frontend`**
+| Model | Accuracy |
+|---------|-----------|
+| Crop Recommendation | 99.3% |
+| Fertilizer Recommendation | 100% |
+| Disease Detection | ~95% |
+| Market Prediction | Prophet Time-Series |
 
 ---
 
-## Render (Backend)
+# 🚀 REST API
 
-Build command
+| Method | Endpoint | Description |
+|---------|----------|------------|
+| GET | /health | Server Health |
+| POST | /predict/crop | Crop Recommendation |
+| POST | /predict/fertilizer | Fertilizer Prediction |
+| POST | /predict/disease | Disease Detection |
+| GET | /weather | Current Weather |
+| GET | /weather/forecast | 7-Day Forecast |
+| GET | /market/forecast | Price Forecast |
+| POST | /chat | AI Assistant |
+| POST | /translate | Translation |
 
-```
+---
+
+# ☁ Deployment
+
+## Frontend
+
+Platform
+
+Vercel
+
+Live
+
+https://smart-crop-advisor-alpha.vercel.app/index.html
+
+---
+
+## Backend
+
+Platform
+
+Render
+
+Build
+
 pip install -r ../requirements.txt
-```
 
-Start command
+Start
 
-```
 uvicorn main:app --host 0.0.0.0 --port $PORT
-```
 
-Environment variables
+---
 
-```
-ANTHROPIC_API_KEY
+## Environment Variables
+
 OPENWEATHER_API_KEY
-```
+
+ANTHROPIC_API_KEY
 
 ---
 
-## Hugging Face Spaces (Recommended)
+# 📈 Future Improvements
 
-1. Create new Space  
-2. Choose **Docker / Gradio**  
-3. Push repository  
-4. Add API keys as secrets  
-
----
-
-# 📱 PWA Installation
-
-### Android
-Chrome → Menu → **Add to Home Screen**
-
-### iPhone
-Safari → Share → **Add to Home Screen**
-
-App opens **like a native mobile app**.
+- Voice Assistant
+- Image Segmentation
+- Satellite Crop Monitoring
+- IoT Sensor Integration
+- AI Yield Prediction
+- Farm Expense Analytics
+- Drone Monitoring
+- Government Scheme Recommendation
+- Soil Health Analytics
+- Farmer Community Portal
 
 ---
 
-# 🔑 API Keys Required
+# 📱 Progressive Web App
 
-| Service | Purpose | Free Tier |
-|---|---|---|
-| OpenWeatherMap | Weather data | 60 calls/min |
-| Anthropic Claude | AI chatbot | Pay per use |
+✔ Installable
 
-Without Anthropic key, chatbot switches to **built-in rule-based responses**.
+✔ Offline Support
 
----
+✔ Mobile Responsive
 
-# 📸 Application Screenshots
+✔ Fast Loading
 
-### Landing Page
-![Landing](images/landing.png)
-
-### Dashboard
-![Dashboard](images/Dashboard.png)
-
-### Account Creation
-![Account Creation](images/Account%20creation.png)
-
-### Crop Advisor
-![Crop Advisor](images/crop_advisor.png)
-
-### Fertilizer Recommendation
-![Fertilizer](images/fertilizer.png)
-
-### Disease Detection
-![Disease Scan](images/disease_scan.png)
-
-### Market Prices
-![Market Prices](images/market_prices.png)
-
-### Price Forecast
-![Price Forecast](images/price%20forecast.png)
-
-### Weather Forecast
-![Weather](images/Weather-forecast.png)
-
-### AI Assistant
-![AI Assistant](images/AI-Assistant.png)
-
-### Recommendation History
-![History](images/Rec%20History.png)
-
-### Profit Advisory
-![Profit Advisory](images/Profit%20Advisory.png)
-
-### Language Translation
-![Language](images/Language%20translation.png)
-
-### Weather Alerts
-![Weather Alerts](images/Weather%20Alerts.png)
-
-### Profile & Settings
-![Profile](images/Profile%20and%20settings.png)
+✔ Native-like Experience
 
 ---
 
-# 👨‍💻 Author
+# 📷 Screenshots
+
+(Add all screenshots here)
+
+---
+
+# 👨‍💻 Developer
 
 **Mohan Namburu**
 
-B.Tech Computer Science  
-Sastra Deemed University,Thanjavur.
+B.Tech Computer Science
 
-GitHub  
+GitHub
+
 https://github.com/mohannamburu18
 
 ---
 
-# ⭐ Support
+# ⭐ If you found this project useful
 
-If you like this project:
+⭐ Star this repository
 
-⭐ Star the repository  
-🍴 Fork the repo  
-📢 Share with others  
+🍴 Fork this repository
+
+💡 Contribute to improve the platform
+
+📢 Share with the farming community
